@@ -16,7 +16,7 @@ laboratorio = "laboratorio.__main__:main"
 packages = ["src/laboratorio"]
 
 [tool.hatch.build.targets.sdist]
-include = ["src/laboratorio", "tests", "contracts", "pyproject.toml", "README.md", "uv.lock"]
+include = ["src/laboratorio", "tests", "contracts", "tools/probar_modelo_local.py", "tools/inferencia_mlx.py", "pyproject.toml", "README.md", "ESTADO.md", "PROGRAMA.md", "RECUPERACION.md", "uv.lock"]
 
 [project.optional-dependencies]
 local-model = ["mlx-lm>=0.30,<0.40"]
