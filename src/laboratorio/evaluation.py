@@ -4,6 +4,7 @@ Los ejercicios incorporados son públicos, sintéticos y pequeños: pruebas de h
 no un conjunto reservado ni evidencia de inteligencia general o eficacia médica.
 """
 from collections import defaultdict
+from fractions import Fraction
 import hashlib
 import json
 import math
@@ -100,8 +101,8 @@ def evaluate(cases,responses):
         if present:
             answer=indexed[c['id']]
             if c['method']=='numeric' and type(answer) in (int,float):
-                try:correct=abs(answer-c['expected'])<=c.get('tolerance',0)
-                except OverflowError:correct=False
+                # Preserve exact integer and binary float values, including tolerance.
+                correct=abs(Fraction(answer)-Fraction(c['expected']))<=Fraction(c.get('tolerance',0))
             elif c['method']=='exact_json':correct=_canonical(answer)==_canonical(c['expected'])
         rows.append({'id':c['id'],'domain':c['domain'],'answered':present,'correct':correct})
         d=domains[c['domain']];d['total']+=1;d['correct']+=int(correct);d['answered']+=int(present)
