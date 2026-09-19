@@ -1,14 +1,14 @@
 """CLI sin red. Evalúa datos, nunca código propuesto por un modelo."""
-import argparse,json,sys,tempfile
+import argparse,json,sqlite3,sys,tempfile
+from contextlib import ExitStack
 from datetime import datetime,timezone
 from pathlib import Path
 from .evaluation import make_cases,public_cases,evaluate,loads_strict
 
 
 def read_json(path):
-    with Path(path).open('r',encoding='utf-8') as f:
-        text=f.read(2_000_001)
-    return loads_strict(text)
+    from .cli_paths import read_json_bytes
+    return loads_strict(read_json_bytes(path).decode('utf-8'))
 
 
 def main(argv=None):
@@ -39,8 +39,9 @@ def main(argv=None):
             result=rolling_naive_backtest(read_json(args.observations),args.min_train,args.horizon,args.seasonal_period)
         else:
             from .authority import LocalAuthority,intent_digest
-            with tempfile.TemporaryDirectory(prefix='laboratorio-demo-') as d:
+            with tempfile.TemporaryDirectory(prefix='laboratorio-demo-') as d, ExitStack() as resources:
                 a=LocalAuthority(Path(d)/'fixture.sqlite3',clock=lambda:'2026-09-19T10:00:00Z')
+                resources.callback(a._db.close)
                 i={'schema_version':'C1.intent.v1','intent_id':'demo_intent','run_id':'demo_run','principal_id':'demo_agent','calendar_id':'demo_calendar','event_id':'demo_event','operation':'RESCHEDULE_EVENT','expected_version':0,'start_utc':'2026-09-20T10:00:00Z','end_utc':'2026-09-20T10:30:00Z'}
                 a.create_event(i['calendar_id'],i['event_id'],'2026-09-20T08:00:00Z','2026-09-20T08:30:00Z',title='EVENTO FICTICIO')
                 token=a.approve(i,original_request_digest=intent_digest(i),approver_id='fixture_not_a_human',expires_at='2026-09-19T11:00:00Z')
@@ -56,7 +57,7 @@ def main(argv=None):
                 except PermissionError:revoked_denied=True
                 result={'synthetic_data':True,'synthetic_clock':True,'human_approval_performed':False,'external_effects':False,'altered_intent_denied':altered_denied,'replay_same_receipt':receipt==again,'revoked_intent_denied':revoked_denied,'final_event':a.get_event(i['calendar_id'],i['event_id']),'C1_T02_verified':False}
         print(json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False));return 0
-    except (ValueError,OSError,RuntimeError) as e:
+    except (ValueError,OSError,RuntimeError,sqlite3.Error) as e:
         print(json.dumps({'error':str(e),'actions_authorized':False},ensure_ascii=False),file=sys.stderr);return 2
 
 if __name__=='__main__':raise SystemExit(main())

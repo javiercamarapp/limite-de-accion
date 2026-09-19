@@ -185,3 +185,5 @@ A short introduction you can adapt:
 [Run the demo](#run-it-locally) · [Read the evidence](ESTADO.md) · [Find a bug](https://github.com/javiercamarapp/limite-de-accion/issues/new) · [Español](docs/USAGE.es.md)
 
 </div>
+
+CLI de operación local: [comandos Unix/SQLite y límites](docs/OPERATOR-CLI.es.md). Se ejecuta con `python -m laboratorio.operator_cli`; modo sintético de mismo UID, sin autenticación humana ni separación de identidades.

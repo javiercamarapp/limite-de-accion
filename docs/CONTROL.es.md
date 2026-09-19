@@ -29,6 +29,34 @@ La demo:
 
 Artefactos privados: `receiver.sqlite3`, `controller.sqlite3`, `controller-export.json`, `report.json`. Los sockets se retiran al cerrar. La lista `recovery_transport_calls` debe ser exactamente `["execute", "get_receipt"]`; `all_controller_transport_calls` agrega el intento revocado. La pérdida de respuesta se inyecta en la aplicación, no es una caída física inducida.
 
+## Endurecimiento del CLI y regresión de muerte de proceso
+
+Los comandos que leen JSON (`score`, `forecast-score`, `backtest`) sólo aceptan archivos regulares UTF-8 de hasta 2.000.000 bytes. Se rechazan enlaces simbólicos tanto en el archivo como en sus padres, FIFO, directorios y componentes `..`. La apertura recorre descriptores de directorio con `O_NOFOLLOW`; la lectura es acotada y usa apertura no bloqueante para evitar esperar a un escritor de FIFO. El parser estricto existente sigue rechazando JSON malformado, claves duplicadas y valores no finitos. En macOS, proporcionar rutas reales (`/private/tmp/...` para entradas, no el alias `/tmp/...`).
+
+La salida de `demo-durable-control` exige un directorio nuevo. Sus padres se verifican por descriptor: propietarios root/UID efectivo, sin escritura de grupo/otros, sin enlaces ni `..`. Los padres faltantes se crean privados. Un error puede dejar directorios y artefactos parciales para diagnóstico; no se borran ni sobrescriben al repetir. Elegir otra ruta para una nueva corrida. Las conexiones y receptores se registran para cierre desde su creación, incluso si falla el fixture, SQLite o el arranque de un hilo. La retirada de sockets conserva el control de inode de la biblioteca existente y no elimina un archivo que haya reemplazado el socket. No se promete resistencia frente a procesos hostiles del mismo UID que cambien esos directorios durante la ejecución.
+
+Los errores de entrada, ruta y almacenamiento SQLite producen código de salida `2`, stdout vacío y un objeto JSON en stderr con `error` y `actions_authorized: false`. Los errores de sintaxis de argumentos conservan el comportamiento de argparse. Los informes del recorrido siguen declarando reloj/datos sintéticos, ausencia de autenticación humana y `C1_T02_verified: false`.
+
+Desde este clon y con el entorno Python ya disponible:
+
+```bash
+PYTHONPATH=src /Users/javiercamaraportepetit/Proyectos/limite-de-accion/.venv/bin/python -m laboratorio demo-durable-control --out runs/control-nuevo
+/Users/javiercamaraportepetit/Proyectos/limite-de-accion/.venv/bin/python -m pytest -q -p no:cacheprovider tests/test_control_recovery_real.py
+/Users/javiercamaraportepetit/Proyectos/limite-de-accion/.venv/bin/python -m pytest -q -p no:cacheprovider --tb=short
+```
+
+`tests/test_control_recovery_real.py` contiene una regresión de SIGKILL real en dos variantes: SQLite directo y transporte Unix/SQLite. El padre espera el recibo del efecto ya confirmado por el receptor y comprueba en otra conexión que el controlador aún conserva `DISPATCHING` sin recibo. Sólo entonces mata a su propio hijo benigno, espera su terminación y verifica reapertura a `UNKNOWN`, ausencia de reenvío, reconciliación a `CONFIRMED`, horario/versión exactos y presupuesto persistente. El hijo no crea descendientes. La variante directa prueba muerte/persistencia, no credenciales del kernel; no sustituye la variante Unix. Ninguna prueba nueva se omite cuando bind está restringido.
+
+Evidencia de esta propuesta local (19-sep-2026; pendiente de revisor limpio):
+
+- Baseline, `python -m pytest -q -p no:cacheprovider`: **364 passed, 1 failed, 37 skipped**, 402 casos. El fallo existente es `test_cli_durable_control_recovers_without_replay`, con `PermissionError: [Errno 1] Operation not permitted` al abrir el socket.
+- TDD inicial del archivo nuevo: **7 failed, 6 passed**. Se observaron aceptación indebida de enlaces, bloqueo FIFO hasta timeout, aceptación de `..` y conexión SQLite sin cerrar. Dos fallos correspondían al bind restringido. Una regresión posterior del error SQLite observó `OperationalError` sin convertir a JSON antes de corregirla.
+- Prueba dirigida de SIGKILL/SQLite directo y error SQLite del CLI: **2 passed**. Se ejecutó SIGKILL real y se recogió al hijo; no es una excepción simulada.
+- Suite completa final, `python -m pytest -q -p no:cacheprovider --tb=short`: **377 passed, 4 failed, 37 skipped**, 418 casos. Los cuatro fallos son bind Unix denegado: la demo existente y las tres pruebas nuevas de inicio de hilo, reemplazo/cleanup y SIGKILL/Unix. Las 37 omisiones provienen de pruebas existentes, sin modificar sus reglas.
+- Wheel y sdist generados con `hatchling.build.build_wheel` / `build_sdist`, usando paquetes ya presentes en caché local, sin instalar dependencias ni acceder a red.
+
+Esta evidencia **no cumple todavía** la compuerta de cero fallos/omisiones. Falta ejecutar la suite con sockets permitidos y obtener revisión limpia independiente. La publicación permanece retenida; estos resultados no certifican producto completo, autenticación humana, separación de UID ni contención adversarial.
+
 ## Contrato del controlador
 
 `laboratorio.controller.DurableController` recibe `transport`, `deadline`, `max_operations` y un reloj confiable. El transporte compatible es `lambda message: request(dispatcher_socket, message)`.
