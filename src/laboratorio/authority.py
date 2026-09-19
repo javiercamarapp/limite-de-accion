@@ -171,6 +171,21 @@ class LocalAuthority:
         with self._lock:
             return self._event(calendar_id, event_id)
 
+    def get_receipt(self, operation_id, *, authenticated_principal):
+        """Lectura acotada al principal; ausencia no prueba que no hubo efecto.
+
+        La autenticación del principal sigue siendo responsabilidad del canal
+        externo. Esta consulta nunca despacha, consume ni revoca autorización.
+        """
+        _identifier(operation_id)
+        _identifier(authenticated_principal)
+        with self._lock:
+            row = self._db.execute(
+                "SELECT receipt_json FROM receipts WHERE operation_id = ? AND principal_id = ?",
+                (operation_id, authenticated_principal),
+            ).fetchone()
+            return json.loads(row['receipt_json']) if row is not None else None
+
     def approve(self, intent, *, original_request_digest, approver_id, expires_at):
         """API admin; original_request_digest debe llegar por un canal protegido."""
         intent = _intent_snapshot(intent)

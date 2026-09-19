@@ -18,6 +18,8 @@ def main(argv=None):
     a=sub.add_parser('score',help='Evalúa un catálogo y una lista JSON de respuestas');a.add_argument('cases');a.add_argument('responses')
     a=sub.add_parser('forecast-score',help='Brier de resoluciones declaradas, sin verificar fuentes');a.add_argument('forecasts');a.add_argument('resolutions');a.add_argument('--now',default=None)
     a=sub.add_parser('backtest',help='Baselines retrospectivos de serie equiespaciada');a.add_argument('observations');a.add_argument('--min-train',type=int,default=4);a.add_argument('--horizon',type=int,default=1);a.add_argument('--seasonal-period',type=int,default=2)
+    a=sub.add_parser('demo-durable-control',help='Recorrido Unix/SQLite con recuperación sintética; NO aislamiento de UIDs')
+    a.add_argument('--out',required=True,help='Directorio nuevo bajo un padre privado/confiable')
     sub.add_parser('demo-control',help='Sólo calendario ficticio y aprobaciones de fixture; ninguna acción externa')
     args=p.parse_args(argv)
     try:
@@ -25,6 +27,9 @@ def main(argv=None):
             result=make_cases(args.seed,args.per_family)
             if args.public:result=public_cases(result)
         elif args.command=='score':result=evaluate(read_json(args.cases),read_json(args.responses))
+        elif args.command=='demo-durable-control':
+            from .control_demo import run_demo
+            result=run_demo(args.out)
         elif args.command=='forecast-score':
             from .forecasts import score_binary_forecasts
             now=args.now or datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -51,7 +56,7 @@ def main(argv=None):
                 except PermissionError:revoked_denied=True
                 result={'synthetic_data':True,'synthetic_clock':True,'human_approval_performed':False,'external_effects':False,'altered_intent_denied':altered_denied,'replay_same_receipt':receipt==again,'revoked_intent_denied':revoked_denied,'final_event':a.get_event(i['calendar_id'],i['event_id']),'C1_T02_verified':False}
         print(json.dumps(result,ensure_ascii=False,indent=2,allow_nan=False));return 0
-    except (ValueError,OSError) as e:
+    except (ValueError,OSError,RuntimeError) as e:
         print(json.dumps({'error':str(e),'actions_authorized':False},ensure_ascii=False),file=sys.stderr);return 2
 
 if __name__=='__main__':raise SystemExit(main())
