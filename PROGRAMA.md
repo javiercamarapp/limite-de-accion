@@ -1,5 +1,19 @@
 # Programa acotado — laboratorio y control
 
+## Autorización vigente: bucle en segundo plano, 19-sep-2026
+
+El usuario volvió a ordenar «dejalo en bucle hasta terminar». Se prepara ejecución real, no una promesa de continuar después de responder. Esta sección sustituye los presupuestos históricos inferiores para esta nueva tanda.
+
+- Supervisor local: `runs/continuo-20260919/loop.py`; política fija y rúbrica en `runs/continuo-20260919/policy.md`.
+- Hasta **6 horas desde su arranque y 24 ejecuciones Codex**, incluyendo 3 auditorías iniciales; un agente simultáneo, 15 minutos por ejecución y dos intentos por tarea. Las llamadas internas y el coste monetario de la suscripción no están medidos. Sin nuevas APIs pagadas, entrenamiento, compras, Docker/usuarios del host ni procesos de agentes anidados.
+- Cola: endurecimiento/recuperación CLI, comandos operativos persistentes, registro de experimentos, historial de pronósticos, importación de evidencia e interfaz de estado local. Las dependencias bloqueadas no impiden continuar las otras tareas.
+- Cada incremento pasa revisión limpia, prueba específica ejecutada, suite completa conservando identidades y sin skips, build y escaneo. Pruebas/autoridad/evaluadores existentes protegidos. Candidatos rechazados se conservan aislados; sin resets ni limpieza del trabajo heredado.
+- **Publicación automática deshabilitada.** Tras tres auditorías del supervisor, se corrigieron los hallazgos y se probaron regresiones, pero no se declara una aprobación final ajena inexistente. Se conserva trabajo revisado en commits de clones locales; la publicación tiene una compuerta posterior separada. El checkout original y main remoto no se sustituyen desde el bucle.
+- Estado/heartbeat/PID/deadline/best commit: `runs/continuo-20260919/state.json`, creado sólo al arrancar. No reiniciar si existe; no resetear presupuestos. STOP cooperativo: crear `runs/continuo-20260919/STOP`.
+- Agotar cola/presupuesto o bloquearse NO significa producto completo. C1-T02, VM dedicada, contención adversarial, H1 y evaluación/adaptación reservada mantienen sus gates.
+
+Lo que sigue documenta fases históricas y no autoriza reiniciar sus relojes.
+
 ## Estado
 PREPARACION_SUPERVISADA. El usuario autorizó construir y pidió ambos módulos. No existe todavía un supervisor externo verificado: no se activa una corrida de código candidato autónoma ni se presume cumplido C1-T02. Los investigadores de web son procesos de lectura separados, acotados y sin acciones de producto.
 

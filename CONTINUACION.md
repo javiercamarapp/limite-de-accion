@@ -1,5 +1,15 @@
 # Ejecución continua autorizada — 2026-09-19
 
+## Nueva autorización después de 21:47 UTC
+
+El usuario volvió a pedir dejar un bucle real hasta terminar. La tanda de90min y sus cuatro agentes ya son historia. Rige ahora la sección inicial de `PROGRAMA.md`: máximo6h desde arranque/24ejecuciones, un agente activo, estado durable en `runs/continuo-20260919/state.json`. Tres revisiones iniciales del supervisor consumen parte de ese presupuesto.
+
+Modo conservador: construcción, revisión y verificación continuas en clones aislados `.lNN`/`.vNN`; commits **locales**, sin push automático pendiente de compuerta final. No se atribuye aprobación al último informe del revisor: sus hallazgos se corrigieron y verificaron con regresiones; se conserva explícita la falta de reaprobación final. Esto permite continuar trabajo reversible sin publicar un control pendiente.
+
+Para detener: `touch runs/continuo-20260919/STOP`. Para observar: `.venv/bin/python -m json.tool runs/continuo-20260919/state.json`. Si no existe estado o el PID ya terminó, no afirmar que continúa. No borrar estado/STOP ni relanzar automáticamente; preservar evidencia y presupuesto.
+
+## Tanda anterior (histórico)
+
 El usuario corrigió explícitamente la parada prematura y volvió a pedir construir todo de punta a punta; autorizó además hacer público el repositorio con licencia MIT. Un checkpoint verificado NO termina el encargo completo. Se sigue con el siguiente entregable elegible; sólo detener dependencias por gate real o ejecución por límite de seguridad/presupuesto.
 
 ## Presupuesto externo

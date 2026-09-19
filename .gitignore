@@ -16,3 +16,6 @@ investigacion-modelos/prompts/
 *.stdout
 *.stderr
 *.sqlite*
+# Clones privados del bucle de construcción, no artefactos del producto.
+.l[0-9][0-9]/
+.v[0-9][0-9]/
