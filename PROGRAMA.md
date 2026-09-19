@@ -31,8 +31,9 @@ Máximo hasta19:17:19UTC del19-sep-2026 (120min desde preflight), cuatro agentes
 ## Nueva tanda autorizada tras la pausa
 El usuario pidió nuevamente continuar después de vencer el presupuesto anterior. Inicio de recuperación 2026-09-19T19:46Z, fin fijo **20:16:00Z** (máximo 30 minutos), hasta seis incrementos, un constructor activo y revisiones secuenciales; máximo dos agentes nuevos de 240s cada uno. Sin reintentos automáticos, entrenamiento, modelos reales ni servicios pagados nuevos. No se confunde esta autorización del usuario con renovación autónoma. Historial y evidencia en `RECUPERACION.md`.
 
-## Parada
-Meta verificada del incremento, presupuesto agotado, misma reparación sin evidencia nueva dos veces, necesidad de permiso administrativo/externo, fallo de aislamiento o incertidumbre que invalide el experimento. Nunca renovar presupuesto solo ni convertir agotamiento en éxito.
+## Continuación vigente y parada
+El usuario corrigió expresamente cerrar al completar un incremento: un checkpoint no equivale a terminar el producto. Continúa con el siguiente entregable elegible. La autorización más reciente incluye repositorio público y MIT; presupuesto, fronteras y entregables vigentes están en `CONTINUACION.md` (20:17–21:47 UTC del 19-sep, 90 minutos, sin renovación automática).
+Detener sólo dependencias afectadas por falta de permiso/aislamiento/datos o incertidumbre que invalide el experimento; detener la corrida por presupuesto agotado o dos intentos sin evidencia nueva sobre la misma reparación. Si hay tareas independientes elegibles y presupuesto, seguir. Nunca convertir presupuesto o checkpoint en éxito del paquete completo.
 
 ## Qué no constituye terminación del paquete completo
 No basta un reporte, un benchmark, un modelo descargado o un entrenamiento que converge. Contención de superinteligencia futura, curas, censo mundial de agentes y predicción cierta del futuro no son resultados demostrados ni promesas del sistema.

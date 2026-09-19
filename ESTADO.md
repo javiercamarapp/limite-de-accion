@@ -1,9 +1,21 @@
 # Estado verificable — recuperación del 19 de septiembre de 2026
 
 ## Alcance entregado
-Incremento local experimental, no entrega enterprise completa. Repositorio privado: https://github.com/javiercamarapp/limite-de-accion, rama predeterminada `main`. La rama local de construcción es `feat/laboratorio-local`.
+Incremento local experimental, no entrega enterprise completa. Repositorio público con licencia MIT (publicación autorizada y verificada después de esta recuperación): https://github.com/javiercamarapp/limite-de-accion, rama predeterminada `main`. La rama local de construcción es `feat/laboratorio-local`.
 
-## Verificado en esta recuperación
+## Continuación pública: Unix, controlador durable y preflight
+
+- Receptor Unix con UID obtenido del kernel, canales/allowlists separados y sockets 0600; controlador SQLite con reserva durable, un único envío y reconciliación sólo por recibo.
+- `laboratorio demo-durable-control --out runs/durable-control-20260919`: **PASS**, UNKNOWN → CONFIRMED sin reenvío, horario exacto/version1, operación revocada REJECTED. Aprobación y reloj sintéticos, mismo UID del host.
+- Suite integrada del coordinador: **401 passed in 8.34s, sin skips**. No se atribuye al sandbox del agente.
+- `tools/preflight_local.py --out runs/unix-preflight-reviewed-20260919 --timeout 30`: **PASS, 24/24**, tres UID de guest, fuente intacta, container_removed=true. Consulta posterior de contenedores etiquetados sin resultados.
+- Revisor independiente halló: comprobar sólo versión no probaba horario; timeout de dockercreate podía dejar un contenedor. Constructor añadió regresiones y fixes; coordinador releyó y ejecutó suite y Docker reales. Sin reintentar creación; recuperación por nombre/nonce propios verificados, nunca borrado por prefijo.
+- Distribución final: **402 passed in 8.95s** desde sdist extraído; wheel instalado en entorno limpio con dependencias fijadas por `uv.lock`, ambas demos ejecutadas fuera de la fuente. Licencia MIT y archivos públicos inspeccionados; sin pesos/runs/.env. La comprobación encontró primero que faltaba CONTROL.es.md en la lista de inclusión: corregido, regresión añadida y build repetido. Un intento offline de instalar dependencias falló por caché incompleta; sincronización normal de dependencias públicas resolvió ese prerrequisito sin tocar el entorno MLX.
+- Linux aarch64, dependencias de uv.lock verificadas por hash, suite en contenedor propio sin red: **402 passed in 17.43s**, sin skips. Primer intento FAILED por cargar Hypothesis nativo desde tmpfs noexec; se reprodujo mmap EPERM y se habilitó exec sólo en el workspace de tests confiables. No cambió código ni expectativas ni el perfil noexec de los24probes. Cleanup confirmado.
+- Código de control y regresiones: commit `8e9f652`, identidad Git existente conservada y escaneo de secretos staged sin hallazgos.
+- **C1_T02_verified=false**, sin VM dedicada, sin contención adversarial, sin autenticación de una persona. Guest root confiable con CHOWN/SETUID/SETGID sólo para setup; hijos sin capabilities. [Contrato y comandos](docs/CONTROL.es.md).
+
+## Verificado en la recuperación anterior (baseline 189)
 
 | Comprobación | Comando / resultado observado |
 |---|---|
@@ -31,9 +43,9 @@ Las revisiones independientes tuvieron límites de temporales en su sandbox: no 
 
 ## Lo que NO prueba esta entrega
 
-- No verifica C1-T02, aislamiento OS o separación adversarial entre candidato y evaluador.
+- No verifica C1-T02 ni separación adversarial entre candidato y evaluador. Sí hay pruebas inocuas de permisos OS entre tres UID dentro de un contenedor limitado; no elevarlas a aislamiento adversarial.
 - No implementa autenticación administrativa externa, multiusuario, despliegue, interfaz enterprise, SSO/RBAC, monitorización operativa o recuperación productiva.
-- No prueba inferencia o entrenamiento MLX actuales. La sesión anterior dejó pesos y resultados públicos de humo locales; no se reinterpretan como validación presente.
+- Inferencia MLX actual sí se ejecutó, pero sólo como humo público sintético de5casos, sin herramientas ni nueva descarga. Mismo conjunto/hash y perfiles ya existentes: base0/5, cobertura4/5, un error de formato; typed3/5, cobertura5/5, sin error de formato. Base terminó FAILED por salida incompleta aunque el trabajador salió0; typed FINISHED no significa todas correctas (falló estadística y Euler). Tiempos internos8.46s/6.34s; picos MLX2,590,867,212/2,708,276,372bytes. Plazo90s por corrida, límite de asignador MLX8GiB, sin aislamiento de red OS; procesos propios eliminados. No hay entrenamiento, mejora general demostrada ni evaluación reservada.
 - No hay validación prospectiva, conjunto reservado independiente, curas, prevención pandémica, supervisión mundial de agentes ni contención garantizada de una superinteligencia.
 - Los límites de procesos no contienen descendientes que abandonen su grupo ni código con acceso adversarial al mismo usuario. SIGKILL, disco permanentemente averiado y caída del equipo pueden impedir persistir el estado final.
 - Un resultado `FINISHED`/`COMPLETE` no es una respuesta correcta ni una autorización.
@@ -46,7 +58,7 @@ Commits sustantivos, sin fechas alteradas ni commits vacíos:
 - `6758a59`: supervisor, límites, interrupciones, persistencia y regresiones.
 - La documentación final queda en el commit posterior, visible mediante `git log`.
 
-Los commits de código llegaron a `main`; GitHub los asocia a la cuenta del usuario. La aparición visual del gráfico puede tardar y, al ser privado el repo, depende de la opción personal de mostrar contribuciones privadas. No se cambió esa preferencia, no se activó facturación ni se configuraron Actions/Pages/Codespaces. Esto no audita ni garantiza el gasto global de la cuenta o de otras sesiones.
+Los commits de código llegaron a `main`; GitHub los asocia a la cuenta del usuario. La aparición visual del gráfico puede tardar. El repositorio nació privado y el usuario autorizó después hacerlo público bajo MIT: GitHub confirmó `isPrivate:false` y licencia MIT; la API sin autenticación confirmó `visibility:public`. Reportes privados de vulnerabilidades habilitados, Actions desactivado. No se cambió la preferencia personal del gráfico ni se activó facturación, Pages o Codespaces. Esto no audita ni garantiza el gasto global de la cuenta o de otras sesiones.
 
 ## Material conservado sólo localmente
 

@@ -1,7 +1,7 @@
 # Construcción C1 e investigación de modelos
 
 ## Autorización
-El usuario pidió «HAZLO EN LOOP HASTA TERMINAR» después de recibir el blueprint, y amplió el encargo con investigación profunda de modelos, entrenamiento, simulaciones y ejercicios científicos. Se inicia construcción local y preparación del supervisor, no producción. Posteriormente, en recuperación del 19-sep, el usuario autorizó commits y publicación del código en su GitHub: repositorio privado `javiercamarapp/limite-de-accion`, Actions desactivado y sin aprovisionar servicios de pago. Datos, pesos, investigaciones sin revisar y secretos siguen locales. No modificar los proyectos originales ni el dossier entregado.
+El usuario pidió «HAZLO EN LOOP HASTA TERMINAR» después de recibir el blueprint, y amplió el encargo con investigación profunda de modelos, entrenamiento, simulaciones y ejercicios científicos. Se inicia construcción local y preparación del supervisor, no producción. Posteriormente, en recuperación del 19-sep, el usuario autorizó commits y publicación del código en su GitHub: repositorio inicialmente privado `javiercamarapp/limite-de-accion`, después público con licencia MIT por autorización explícita; Actions desactivado y sin aprovisionar servicios de pago. Datos, pesos, investigaciones sin revisar y secretos siguen locales. No modificar los proyectos originales ni el dossier entregado.
 
 ## Alcance ampliado explícitamente por el usuario
 El usuario aclaró que quiere AMBOS: laboratorio de inteligencia/capacidades y control, entrenamiento de modelos para independencia de OpenAI/Claude, conocimiento del estado real, observación pública de automatización/enjambres y pronósticos. Esto sustituye la prioridad de construir sólo calendario. No atribuir ese nuevo alcance al dossier C1 original ni afirmar que cabe completo en dos horas.
@@ -12,7 +12,11 @@ El usuario aclaró que quiere AMBOS: laboratorio de inteligencia/capacidades y c
 - El producto debe poder operar localmente; la investigación actual usa la suscripción Codex existente. No confundir independencia operativa futura con independencia del proceso de construcción actual.
 - Sin compras, nuevas APIs de pago, datos clínicos privados, efectos remotos, eliminación de salvaguardas para capacidades peligrosas ni cambios administrativos en sistemas compartidos.
 
-## Presupuesto de esta corrida
+## Continuación vigente
+
+Ver `CONTINUACION.md` para el presupuesto posterior (hasta21:47UTC, cuatro agentes ya consumidos) y `ESTADO.md`/`docs/CONTROL.es.md` para evidencia actual. Hay transporte con UID del kernel, controlador durable y preflight inocuo de tresUIDs; no C1-T02 completo. Inferencia MLX actual corre: pequeño humo público base0/5 y typed3/5, no adaptación validada. No reiniciar presupuestos históricos siguientes ni marcar enterprise completo.
+
+## Presupuesto de la corrida inicial (histórico)
 Inicio operativo de preflight: 2026-09-19T17:17:19Z. Máximo120min de pared; final19:17:19Z. Máximo4 procesos de agentes simultáneos. Por tarea30min y hasta3 reparaciones, sin renovar el reloj. No reintentos del orquestador de investigación; registrar reconexiones internas del CLI. Las cuotas de suscripción existentes no están medidas. Costo de compras/nuevas APIs: cero.
 
 ## Preflight observado

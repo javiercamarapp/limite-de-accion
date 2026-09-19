@@ -57,6 +57,16 @@ The demo creates a temporary fictional calendar and checks three things:
 
 *Selected fields from a verified run, not the complete output.* The experiment rejects changed intent, avoids repeating an already applied effect, and rejects a pending action after revocation. It does not authenticate a real human or operate a real calendar.
 
+### Recover an uncertain action without sending it twice
+
+```bash
+uv run --locked laboratorio demo-durable-control --out runs/control-example
+```
+
+This second demo uses real local Unix sockets and two SQLite databases. It deliberately loses a response after a fictional event changes, reopens the controller, and reconciles the receipt **without re-sending the action**. The resulting sequence is `UNKNOWN → CONFIRMED`, with exactly one effect. A revoked follow-up is rejected. The output directory must be new and under trusted, non-shared parents.
+
+It uses synthetic approvals and the same host UID: **this demo is not OS role separation or human authentication**. A separate, bounded Docker preflight checks three guest UIDs and 24 explicit permission/effect probes. See the [control and recovery guide](docs/CONTROL.es.md), including its resource profile, commands and limitations.
+
 ## What you can use today
 
 | Component | What it does | What it does **not** prove |
@@ -65,9 +75,11 @@ The demo creates a temporary fictional calendar and checks three things:
 | **Forecast evaluation** | Computes Brier scores for declared resolutions; keeps unresolved predictions unscored | That supplied evidence is authentic or a prediction was registered in advance |
 | **Time-series baselines** | Tests last-value and seasonal baselines using only earlier observations | Prospective forecasting ability or pandemic prediction |
 | **Local action experiment** | Binds an exact intent, declared actor, approval and resource version inside SQLite transactions | External authentication, a protected admin channel, or adversarial isolation |
+| **Kernel-identified Unix channels** | Separates administrative and dispatcher method sets; obtains peer UID from the OS, never JSON | A real person's identity, dedicated VM isolation, or hostile-code containment |
+| **Durable action controller** | Persists reservations and dispatch state; reconciles uncertain results by receipt query without replaying | Production service orchestration, authentication, or an external calendar integration |
 | **Experimental process supervisor** | Bounds runtime and logs, handles interruption, and records explicit failure states | A security sandbox, hard OS resource quotas, or containment of escaping descendants |
 
-The optional inference scripts require separately validated local MLX dependencies, weights and a manifest. **Their process supervisor was tested with benign workers; current real-model inference and training have not been revalidated.**
+The optional inference scripts require separately validated local MLX dependencies, weights and a manifest. A bounded local Qwen3-4B run was rechecked on September 19, 2026: **0/5 correct with the existing base profile, 3/5 with the existing typed profile**, on the same five public synthetic cases. Coverage was 4/5 and 5/5 respectively. This is a tiny, non-held-out smoke check—not training, a reliable capability estimate, or evidence of general improvement. No answers were executed as tools; no new weights or AI API were used.
 
 See the [Spanish operating guide](docs/USAGE.es.md) for commands, file formats and failure semantics.
 
@@ -91,7 +103,11 @@ The [regression is in the repository](tests/test_numeric_precision.py). So are t
 
 The recorded September 19, 2026 verification includes:
 
-- **189 passing tests** from the source tree and from an extracted source distribution.
+- **402 passing tests, no skips**, from the source tree and an extracted source distribution, including a packaging-link regression.
+- **402 passing tests on Linux aarch64**, no skips, in a separate offline test container. Its trusted-code workspace permits native-extension execution; the permission preflight retains its separate `noexec` profile.
+- Both control demos run from a clean wheel installation outside the source checkout; MIT license and source-distribution contents inspected.
+- Real Unix/SQLite recovery demo: one effect, no uncertain-operation redispatch, revoked follow-up rejected.
+- **24/24 benign Docker probes** across three guest UIDs after independent review and two fixes; source unchanged and owned container removed. This is not C1-T02 certification.
 - Wheel construction, clean installation, and the installed demo run outside the repository.
 - **189 passing tests from a fresh GitHub clone** at commit `36e34f8`.
 - An 80-run benign process-cleanup check after fixing a macOS termination race.
@@ -134,6 +150,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the contribution workflow, testing ex
 - [x] Forecast scoring and chronological baselines.
 - [x] Fictional transactional authorization and revocation experiment.
 - [x] Bounded process supervision with failure regressions.
+- [x] Kernel-identified Unix transport and durable no-replay reconciliation.
+- [x] Benign three-UID Docker preflight with bounded resources and explicit limitations.
 - [ ] Independently verified OS isolation and candidate/evaluator separation.
 - [ ] Real authentication and protected administrative authority.
 - [ ] Reproducible local-model integration and justified, evaluated adaptation.

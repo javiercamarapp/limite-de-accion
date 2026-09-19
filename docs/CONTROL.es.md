@@ -61,7 +61,8 @@ El contenedor propio se elimina por ID previamente verificado. Si `docker create
 
 ## Evidencia del 19-sep-2026
 
-- Suite coordinador: **401 passed, sin skips**, 8.34 s.
+- Primera suite integrada: **401 passed, sin skips**, 8.34 s. Tras añadir regresión de empaquetado: **402 passed** en fuente macOS (8.39s), sdist/entorno limpio macOS (8.95s) y Linux aarch64 (17.43s), todos sin skips.
+- La suite Linux se ejecutó sin red dentro de su propio contenedor de pruebas: 1CPU,512MiB,64PIDs, raíz RO, sin capabilities; dependencias pequeñas descargadas en host y verificadas contra hashes de uv.lock. Su workspace de código confiable permite exec para extensiones nativas. El primer intento, con tmpfs noexec por defecto, terminó con error de importación de Hypothesis y NO se contó como PASS; un probe de mmap reprodujo EPERM. Se corrigió sólo ese entorno de tests, sin modificar pruebas ni el perfil noexec del preflight de permisos. Contenedores propios eliminados.
 - Demo real Unix/SQLite: `UNKNOWN → CONFIRMED`, un efecto con horario esperado, operación revocada rechazada.
 - Docker posterior a auditoría: **24/24**, fuentes intactas, contenedor propio eliminado; sin contenedores restantes con la etiqueta de este experimento en la consulta posterior.
 - Auditor independiente encontró dos falsos positivos/omisiones operativas: sólo comprobar versión no demostraba cambio horario, y creación Docker ambigua podía dejar huérfanos. Se añadieron regresiones, se corrigieron y se volvió a ejecutar el preflight real.
