@@ -1,107 +1,169 @@
-# Laboratorio local de evaluación y control de IA
+<div align="center">
 
-**Software experimental local, no un sistema enterprise terminado ni una garantía de contención de IA.** Evalúa respuestas JSON sobre tareas sintéticas, puntúa pronósticos declarados y prueba autorización transaccional sobre un calendario ficticio. El núcleo no necesita APIs ni modelos externos para ejecutarse.
+# Límite de Acción
+### A confident AI answer is not a permission slip.
 
-## Instalación
+**A local lab for testing AI answers, checking forecasts, and experimenting with explicit action boundaries.**
 
-Python 3.12 y [uv](https://docs.astral.sh/uv/) instalados:
+[Run the demo](#run-it-locally) · [Find a failure](#help-build-something-worth-trusting) · [What works today](#what-you-can-use-today) · [Guía en español](docs/USAGE.es.md)
+
+**Make failures reproducible. Keep confidence separate from authority.**
+
+</div>
+
+---
+
+## Why this exists
+
+An AI system can produce a convincing answer and still be wrong. It can finish a task without satisfying the original request. A high benchmark score does not grant it permission to act.
+
+**Límite de Acción turns those distinctions into code you can inspect and experiments you can repeat.**
+
+We are starting small: deterministic evaluation, explicit uncertainty, and a transactional control experiment using a fictional calendar. The longer-term direction is a local-first laboratory where capability evaluation and external controls can be tested together—without requiring a proprietary AI API for the core.
+
+**The invitation is global: don't take our word for it. Run it. Challenge it. Bring a reproducible counterexample.**
+
+> [!IMPORTANT]
+> **Experimental, not a production safety system.** This is not an enterprise release, an operating-system sandbox, or a guarantee of AI containment. A passing test is evidence about that test—not a certificate of safety.
+>
+> **Access:** this repository is currently private. Public cloning and outside participation require the owner's publication decision. No open-source license has been selected yet; do not assume redistribution rights. This README prepares the project for a future public launch.
+
+## Run it locally
+
+You need **Python 3.12**, [uv](https://docs.astral.sh/uv/), and repository access. The recorded end-to-end checks ran on macOS; the experimental process supervisor uses POSIX APIs.
 
 ```bash
-uv sync --extra dev --locked
-uv run --locked laboratorio --help
+git clone https://github.com/javiercamarapp/limite-de-accion.git
+cd limite-de-accion
+uv sync --locked --extra dev
 uv run --locked laboratorio demo-control
 uv run --locked python -m pytest -q
 ```
 
-La primera instalación descarga dependencias de registros públicos; no llama a servicios de IA. `unittest discover` **no** ejecuta esta suite: las pruebas son pytest.
+**No AI API key, paid inference endpoint, or model download is needed for this demo.** Initial setup downloads Python dependencies. The core then runs locally.
 
-También puede construirse e instalarse el wheel:
-
-```bash
-uv build
-uv pip install --python /ruta/a/venv/bin/python dist/laboratorio_control_ia-0.1.0-py3-none-any.whl
-```
-
-Después de instalar, `laboratorio` y `python -m laboratorio` funcionan fuera del repositorio. El extra opcional `local-model` instala MLX para Apple Silicon; no es necesario para los comandos siguientes y no descarga pesos automáticamente.
-
-## Ejercicios y evaluación
-
-Usa una carpeta de trabajo nueva para no sobrescribir archivos existentes:
-
-```bash
-mkdir -p runs/mi-evaluacion
-laboratorio cases --seed 17 --per-family 4 > runs/mi-evaluacion/referencias.json
-laboratorio cases --seed 17 --per-family 4 --public > runs/mi-evaluacion/preguntas.json
-```
-
-Envía sólo `preguntas.json` al modelo. El archivo de respuestas tiene este formato:
+The demo creates a temporary fictional calendar and checks three things:
 
 ```json
-[{"id":"17-arithmetic-0","answer":123}]
+{
+  "altered_intent_denied": true,
+  "replay_same_receipt": true,
+  "revoked_intent_denied": true,
+  "human_approval_performed": false,
+  "external_effects": false,
+  "C1_T02_verified": false
+}
 ```
 
-`123` es ilustrativo, no la respuesta de referencia. Puntúa sin ejecutar texto del modelo:
+*Selected fields from a verified run, not the complete output.* The experiment rejects changed intent, avoids repeating an already applied effect, and rejects a pending action after revocation. It does not authenticate a real human or operate a real calendar.
 
-```bash
-laboratorio score runs/mi-evaluacion/referencias.json runs/mi-evaluacion/respuestas.json
+## What you can use today
+
+| Component | What it does | What it does **not** prove |
+|---|---|---|
+| **Answer evaluation** | Scores JSON responses against deterministic references; rejects malformed input; keeps missing answers in the denominator | General intelligence, medical efficacy, or performance on a hidden benchmark |
+| **Forecast evaluation** | Computes Brier scores for declared resolutions; keeps unresolved predictions unscored | That supplied evidence is authentic or a prediction was registered in advance |
+| **Time-series baselines** | Tests last-value and seasonal baselines using only earlier observations | Prospective forecasting ability or pandemic prediction |
+| **Local action experiment** | Binds an exact intent, declared actor, approval and resource version inside SQLite transactions | External authentication, a protected admin channel, or adversarial isolation |
+| **Experimental process supervisor** | Bounds runtime and logs, handles interruption, and records explicit failure states | A security sandbox, hard OS resource quotas, or containment of escaping descendants |
+
+The optional inference scripts require separately validated local MLX dependencies, weights and a manifest. **Their process supervisor was tested with benign workers; current real-model inference and training have not been revalidated.**
+
+See the [Spanish operating guide](docs/USAGE.es.md) for commands, file formats and failure semantics.
+
+## One bug explains the philosophy
+
+A review found that the evaluator could accept this wrong answer with **zero tolerance**:
+
+```text
+Expected: 100000000000000000000
+Received: 100000000000000000001
+Old result: correct
 ```
 
-- Las respuestas ausentes permanecen en el denominador y el estado es `INCOMPLETE`.
-- `COMPLETE` significa que hubo respuesta para cada caso, **no que sean correctas**.
-- El código de salida 0 significa evaluación ejecutada, **no aprobación ni exactitud del modelo**. Inspecciona `accuracy`, `coverage`, `missing`, `by_domain` y `rows`.
-- Se rechazan IDs duplicados/desconocidos, campos extra, claves JSON duplicadas y números no finitos. Las respuestas nunca se ejecutan.
-- Los hashes identifican entradas, no autentican su origen. `authorizes_actions` siempre es falso.
-- Cambiar la semilla no crea un conjunto reservado: el generador y las referencias son públicos. Estas tareas no miden inteligencia general ni eficacia científica.
+Mixing integers and floating-point arithmetic rounded away the difference. A separate reviewer reproduced it. A constructor added regression cases and replaced the lossy comparison with exact rational arithmetic. The coordinator repeated the reproduction and the tests before merging the fix.
 
-## Pronósticos y series
+**That is the kind of contribution we want: fewer false assurances, more executable evidence.**
 
-```bash
-laboratorio forecast-score pronosticos.json resoluciones.json --now 2026-09-19T12:00:00Z
-laboratorio backtest observaciones.json --min-train 4 --horizon 1 --seasonal-period 2
-```
+The [regression is in the repository](tests/test_numeric_precision.py). So are tests for interruption, bounded logs, malformed inputs, persistence failures, revocation and replay.
 
-Un pronóstico requiere exactamente `id`, `question`, `probability`, `issued_at`, `resolve_at`, `resolution_rule`. Una resolución requiere `id`, `outcome` booleano, `resolved_at`, `evidence_url`. Timestamps UTC `YYYY-MM-DDTHH:MM:SSZ`.
+## Evidence, not a green-badge promise
 
-Las observaciones son una lista `[{"date":"2026-01-01","value":10}, ...]` con fechas estrictamente ascendentes y equiespaciadas. El horizonte se mide en observaciones, no días.
+The recorded September 19, 2026 verification includes:
 
-Brier se calcula únicamente para resoluciones; sin ellas devuelve `null`, nunca un error cero aparente. El baseline binario es p=0.5. Las URLs no se consultan ni se autentican; las fechas declaradas no demuestran registro prospectivo. El backtest compara última observación y baseline estacional sin usar datos posteriores al origen. **No predice pandemias ni valida una cura.**
+- **189 passing tests** from the source tree and from an extracted source distribution.
+- Wheel construction, clean installation, and the installed demo run outside the repository.
+- **189 passing tests from a fresh GitHub clone** at commit `36e34f8`.
+- An 80-run benign process-cleanup check after fixing a macOS termination race.
+- Secret scanning of published changes and Git history with no findings in those scans.
 
-## Control local ficticio
+These are **recorded local results, not a continuously updated CI status**. GitHub Actions is disabled; no paid CI, hosting, or training service is provisioned by this repository. Re-run the checks on your own revision and environment.
 
-```bash
-laboratorio demo-control
-```
+Read the [verification record and limitations](ESTADO.md). A complete run is not necessarily a correct answer. A correct answer is never authorization.
 
-Crea una base SQLite temporal y prueba: intent alterado rechazado, replay con el mismo recibo sin duplicar efectos y rechazo tras revocación. La salida declara `synthetic_data:true`, `human_approval_performed:false`, `external_effects:false`, `C1_T02_verified:false`.
+## Help build something worth trusting
 
-La biblioteca `LocalAuthority` liga intent, actor declarado, versión y aprobación dentro de transacciones. **Sus APIs administrativas, reloj, identidad y base de datos deben estar protegidos fuera del módulo.** Pasar un string `authenticated_principal` no autentica a nadie. No expongas estas funciones directamente a un modelo o a internet. Revocar no deshace efectos ya realizados; recuperar un recibo anterior no es una nueva ejecución.
+You do not need to train a bigger model to make a useful contribution.
 
-## Runner de inferencia (experimental, sólo desde las fuentes)
+| Your perspective | A useful first contribution |
+|---|---|
+| **Python engineer** | Reproduce an edge case; add a minimal failing test and a focused fix |
+| **AI evaluation researcher** | Challenge a scoring assumption; propose benign tasks with independently checkable answers |
+| **Security engineer** | Review authorization and process-lifecycle boundaries; explain what an experiment fails to establish |
+| **Forecasting researcher** | Test chronology, resolution rules, leakage and baseline selection |
+| **Technical writer or translator** | Make an experiment easier to reproduce; clarify a limit; help readers in another language |
 
-`tools/probar_modelo_local.py` supervisa `tools/inferencia_mlx.py`. Para usar un modelo real se necesitan Apple Silicon/MLX, pesos locales aprobados dentro de `weights/` y un manifiesto local `artifacts/modelo-local.json` con `repo`, `revision`, `path` y `files` (SHA-256 por archivo). Esos artefactos **no se publican ni descargan automáticamente**. Esta recuperación verificó el runner con workers falsos; no revalidó los pesos, la inferencia MLX ni entrenamiento.
+### Bring a counterexample
 
-Una vez validados esos requisitos, el comando operativo es:
+For ordinary, non-sensitive bugs, [open an issue](https://github.com/javiercamarapp/limite-de-accion/issues/new) with:
 
-```bash
-.venv/bin/python tools/probar_modelo_local.py --out runs/nueva-corrida --timeout 60 --per-family 1
-```
+1. The exact commit, operating system and Python version.
+2. The command and the smallest **synthetic** input that reproduces the problem.
+3. Expected versus actual output.
+4. Why the difference matters.
 
-La salida debe ser nueva y estar dentro de `runs/`; no se admiten symlinks de salida. `--timeout` acepta 30–600 segundos; `LAB_BUILD_DEADLINE` puede acortar el plazo. Se usan reloj civil y monotónico. El código de salida 0 exige worker terminado, todas las respuestas presentes y sin errores de formato; no exige que las respuestas sean correctas.
+For a fix, open a focused pull request with the reproduction and test output. **Do not remove a failing test just to make the suite green.**
 
-- SIGTERM/SIGINT y timeout limpian el grupo creado por el runner con TERM, gracia finita, KILL si hace falta y recolección del hijo. No hay `pkill` global.
-- Entradas JSON regulares de hasta 2 MB; rechazo de FIFO, symlinks de entrada y UTF-8 inválido. Logs stdout/stderr limitados conjuntamente a 2 MB.
-- `state.json` registra `RUNNING`, `FINISHED`, `FAILED`, `TIMEOUT` o `INTERRUPTED`. Es autoritativo sólo cuando el cierre se persistió correctamente. Ante `RUNNING` sin proceso vivo, tratar como corrida incompleta y revisar logs; nunca como PASS.
-- Escrituras atómicas por archivo y un reintento de persistencia terminal. No hay transacción atómica entre los dos informes, ni garantía de persistir ante disco averiado, SIGKILL o caída del equipo.
-- Los límites son operativos: no son cuotas de disco/memoria del OS ni separación contra candidatos adversarios. Un descendiente que escape del grupo tampoco queda contenido por esta técnica.
+Do not post credentials, private data, harmful biological procedures, or exploit details that would expose other systems. Do not test systems you do not own or have permission to assess. A dedicated confidential security-reporting channel is still a public-launch prerequisite; until one is available, keep sensitive details out of public issues and arrange a private channel with the owner first.
 
-## Estado y contribuciones
+*Issue and pull-request participation currently requires repository access. License and contributor terms must be settled before a public contribution program.*
 
-Consulta `ESTADO.md` para evidencia y pendientes; `PROGRAMA.md` y `RECUPERACION.md` registran la tanda de desarrollo. Los commits son checkpoints reales, no certificaciones de seguridad. No se alteran fechas ni se generan commits vacíos.
+## The next frontier
 
-Este repositorio no incluye workflows de Actions, Pages, Codespaces, entrenamiento remoto ni aprovisionamiento de pago. Las pruebas se ejecutan localmente. No se garantiza facturación global de una cuenta GitHub ni el precio futuro de terceros. En un repo privado la visibilidad del gráfico depende de la opción personal de mostrar contribuciones privadas.
+- [x] Local evaluation with explicit missing/invalid states.
+- [x] Forecast scoring and chronological baselines.
+- [x] Fictional transactional authorization and revocation experiment.
+- [x] Bounded process supervision with failure regressions.
+- [ ] Independently verified OS isolation and candidate/evaluator separation.
+- [ ] Real authentication and protected administrative authority.
+- [ ] Reproducible local-model integration and justified, evaluated adaptation.
+- [ ] Independently held-out evaluation and prospective validation.
+- [ ] Public-evidence observatory with provenance and explicit uncertainty.
+- [ ] Operational interface, deployment, monitoring and recovery validation.
+- [ ] Public-launch readiness: visibility, license and confidential security reporting.
 
-No se versionan `.env`, credenciales, pesos, datos privados, bases SQLite ni `runs/`. Los informes de investigación y los scripts heredados de investigación/descarga permanecen locales hasta una revisión específica; no son dependencias del núcleo instalable. Sólo se incluyen los dos scripts de inferencia/supervisión descritos arriba. El wheel distribuye el núcleo; el sdist también incluye herramientas y pruebas, pero nunca pesos ni resultados privados.
+These are **open work items, not shipped features or promised outcomes**. The project does not claim to prevent extinction, discover cures, enumerate every agent on the internet, or contain a future superintelligence.
 
-## Antes de producción
+## Help the right people find it
 
-Faltan, entre otros: autenticación y autorización externas, aislamiento OS y separación real de candidato/evaluador, interfaz operativa, observabilidad protegida, despliegue y recuperación verificados, pruebas de carga, evaluación reservada y validación humana/científica. No hay certificación enterprise, censo mundial de agentes, entrenamiento demostrado ni garantía de evitar catástrofes.
+**If you can access the repository, run one experiment before sharing an opinion.** When the public launch is approved:
+
+- **Star** it if you want to follow evidence-first AI tooling—not as a safety endorsement.
+- **Share a reproduction**, whether it succeeds or fails. A useful failure can be more valuable than a promotional post.
+- **Send it to one evaluator, engineer or researcher** who will challenge the assumptions.
+- **Contribute one precise improvement.** No artificial activity, manufactured benchmarks or engagement spam.
+
+A short introduction you can adapt **after public access is enabled**:
+
+> A confident AI answer isn't permission to act. Límite de Acción is an experimental local lab for deterministic evaluation, forecast checks, and explicit action-control tests. No AI API key needed for the core demo. Try it, find a failure, and help make the evidence better.
+> https://github.com/javiercamarapp/limite-de-accion
+
+---
+
+<div align="center">
+
+**Don't help us look safer. Help us find out where we aren't.**
+
+[Run the demo](#run-it-locally) · [Read the evidence](ESTADO.md) · [Find a bug](https://github.com/javiercamarapp/limite-de-accion/issues/new) · [Español](docs/USAGE.es.md)
+
+</div>
