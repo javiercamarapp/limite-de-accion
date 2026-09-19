@@ -186,4 +186,6 @@ A short introduction you can adapt:
 
 </div>
 
-CLI de operación local: [comandos Unix/SQLite y límites](docs/OPERATOR-CLI.es.md). Se ejecuta con `python -m laboratorio.operator_cli`; modo sintético de mismo UID, sin autenticación humana ni separación de identidades.
+Local operations: [Unix/SQLite commands and limits](docs/OPERATOR-CLI.es.md), via `python -m laboratorio.operator_cli`. This is a synthetic same-UID workflow, not human authentication or role isolation.
+
+Experiment provenance: [versioned local manifests](docs/EXPERIMENT-REGISTRY.es.md), via `python -m laboratorio.experiment_registry`. Hashes are computed from actual files; missing/invalid artifacts remain explicit. Integrity is not authenticity, scientific validation, or authorization.
