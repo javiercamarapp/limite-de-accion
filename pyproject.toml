@@ -6,6 +6,8 @@ build-backend = "hatchling.build"
 name = "laboratorio-control-ia"
 version = "0.1.0"
 description = "Laboratorio local: evaluación reproducible, evidencia y límites externos"
+license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.12,<3.13"
 dependencies = ["jsonschema>=4,<5"]
 
@@ -16,7 +18,7 @@ laboratorio = "laboratorio.__main__:main"
 packages = ["src/laboratorio"]
 
 [tool.hatch.build.targets.sdist]
-include = ["src/laboratorio", "tests", "contracts", "tools/probar_modelo_local.py", "tools/inferencia_mlx.py", "pyproject.toml", "README.md", "docs/USAGE.es.md", "ESTADO.md", "PROGRAMA.md", "RECUPERACION.md", "uv.lock"]
+include = ["src/laboratorio", "tests", "contracts", "tools/probar_modelo_local.py", "tools/inferencia_mlx.py", "pyproject.toml", "README.md", "docs/USAGE.es.md", "ESTADO.md", "PROGRAMA.md", "RECUPERACION.md", "LICENSE", "CONTRIBUTING.md", "SECURITY.md", "uv.lock"]
 
 [project.optional-dependencies]
 local-model = ["mlx-lm>=0.30,<0.40"]

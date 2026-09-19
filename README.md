@@ -26,11 +26,11 @@ We are starting small: deterministic evaluation, explicit uncertainty, and a tra
 > [!IMPORTANT]
 > **Experimental, not a production safety system.** This is not an enterprise release, an operating-system sandbox, or a guarantee of AI containment. A passing test is evidence about that test—not a certificate of safety.
 >
-> **Access:** this repository is currently private. Public cloning and outside participation require the owner's publication decision. No open-source license has been selected yet; do not assume redistribution rights. This README prepares the project for a future public launch.
+> **Open source under the [MIT License](LICENSE).** Contributions are welcome: read [CONTRIBUTING.md](CONTRIBUTING.md). Report vulnerabilities through the [security policy](SECURITY.md), not public issue details.
 
 ## Run it locally
 
-You need **Python 3.12**, [uv](https://docs.astral.sh/uv/), and repository access. The recorded end-to-end checks ran on macOS; the experimental process supervisor uses POSIX APIs.
+You need **Python 3.12** and [uv](https://docs.astral.sh/uv/). The recorded end-to-end checks ran on macOS; the experimental process supervisor uses POSIX APIs.
 
 ```bash
 git clone https://github.com/javiercamarapp/limite-de-accion.git
@@ -124,9 +124,9 @@ For ordinary, non-sensitive bugs, [open an issue](https://github.com/javiercamar
 
 For a fix, open a focused pull request with the reproduction and test output. **Do not remove a failing test just to make the suite green.**
 
-Do not post credentials, private data, harmful biological procedures, or exploit details that would expose other systems. Do not test systems you do not own or have permission to assess. A dedicated confidential security-reporting channel is still a public-launch prerequisite; until one is available, keep sensitive details out of public issues and arrange a private channel with the owner first.
+Do not post credentials, private data, harmful biological procedures, or exploit details that would expose other systems. Do not test systems you do not own or have permission to assess. Use [GitHub private vulnerability reporting](https://github.com/javiercamarapp/limite-de-accion/security/advisories/new) following [SECURITY.md](SECURITY.md); if that form is unavailable, request a private channel without publishing sensitive details.
 
-*Issue and pull-request participation currently requires repository access. License and contributor terms must be settled before a public contribution program.*
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the contribution workflow, testing expectations and MIT contribution terms.
 
 ## The next frontier
 
@@ -140,20 +140,20 @@ Do not post credentials, private data, harmful biological procedures, or exploit
 - [ ] Independently held-out evaluation and prospective validation.
 - [ ] Public-evidence observatory with provenance and explicit uncertainty.
 - [ ] Operational interface, deployment, monitoring and recovery validation.
-- [ ] Public-launch readiness: visibility, license and confidential security reporting.
+- [x] Public-launch documentation: MIT license, contribution guide and security-reporting policy.
 
 These are **open work items, not shipped features or promised outcomes**. The project does not claim to prevent extinction, discover cures, enumerate every agent on the internet, or contain a future superintelligence.
 
 ## Help the right people find it
 
-**If you can access the repository, run one experiment before sharing an opinion.** When the public launch is approved:
+**Run one experiment before sharing an opinion.** Then help others investigate it:
 
 - **Star** it if you want to follow evidence-first AI tooling—not as a safety endorsement.
 - **Share a reproduction**, whether it succeeds or fails. A useful failure can be more valuable than a promotional post.
 - **Send it to one evaluator, engineer or researcher** who will challenge the assumptions.
 - **Contribute one precise improvement.** No artificial activity, manufactured benchmarks or engagement spam.
 
-A short introduction you can adapt **after public access is enabled**:
+A short introduction you can adapt:
 
 > A confident AI answer isn't permission to act. Límite de Acción is an experimental local lab for deterministic evaluation, forecast checks, and explicit action-control tests. No AI API key needed for the core demo. Try it, find a failure, and help make the evidence better.
 > https://github.com/javiercamarapp/limite-de-accion
