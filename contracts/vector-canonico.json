@@ -1,0 +1,19 @@
+{
+  "scope": "VECTOR_DOCUMENTAL_CALCULADO_NO_IMPLEMENTACION_VALIDADA",
+  "input": {
+    "schema_version": "C1.intent.v1",
+    "intent_id": "intent_demo_01",
+    "run_id": "run_demo_01",
+    "principal_id": "agent_demo",
+    "calendar_id": "calendar_demo",
+    "event_id": "event_demo_01",
+    "operation": "RESCHEDULE_EVENT",
+    "expected_version": 3,
+    "start_utc": "2026-09-20T10:00:00Z",
+    "end_utc": "2026-09-20T10:30:00Z"
+  },
+  "canonical_utf8": "{\"calendar_id\":\"calendar_demo\",\"end_utc\":\"2026-09-20T10:30:00Z\",\"event_id\":\"event_demo_01\",\"expected_version\":3,\"intent_id\":\"intent_demo_01\",\"operation\":\"RESCHEDULE_EVENT\",\"principal_id\":\"agent_demo\",\"run_id\":\"run_demo_01\",\"schema_version\":\"C1.intent.v1\",\"start_utc\":\"2026-09-20T10:00:00Z\"}",
+  "canonical_hex": "7b2263616c656e6461725f6964223a2263616c656e6461725f64656d6f222c22656e645f757463223a22323032362d30392d32305431303a33303a30305a222c226576656e745f6964223a226576656e745f64656d6f5f3031222c2265787065637465645f76657273696f6e223a332c22696e74656e745f6964223a22696e74656e745f64656d6f5f3031222c226f7065726174696f6e223a2252455343484544554c455f4556454e54222c227072696e636970616c5f6964223a226167656e745f64656d6f222c2272756e5f6964223a2272756e5f64656d6f5f3031222c22736368656d615f76657273696f6e223a2243312e696e74656e742e7631222c2273746172745f757463223a22323032362d30392d32305431303a30303a30305a227d",
+  "sha256": "981cb4a9bf035653e1f2a271ba853ecc67102ac51fe6fcc962dd9b7db48b3a9d",
+  "intent_digest": "C1.intent.v1:sha256:981cb4a9bf035653e1f2a271ba853ecc67102ac51fe6fcc962dd9b7db48b3a9d"
+}

@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "laboratorio-control-ia"
+version = "0.1.0"
+description = "Laboratorio local: evaluación reproducible, evidencia y límites externos"
+requires-python = ">=3.12,<3.13"
+dependencies = ["jsonschema>=4,<5"]
+
+[project.scripts]
+laboratorio = "laboratorio.__main__:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/laboratorio"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/laboratorio", "tests", "contracts", "pyproject.toml", "README.md", "uv.lock"]
+
+[project.optional-dependencies]
+local-model = ["mlx-lm>=0.30,<0.40"]
+dev = ["pytest>=8,<10", "hypothesis>=6,<7"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

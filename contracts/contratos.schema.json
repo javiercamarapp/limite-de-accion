@@ -1,0 +1,300 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:limite-de-accion:C1:messages:v1",
+  "title": "Límite de Acción — contratos centrales C1 propuestos",
+  "description": "Especificación no implementada. Validar estructura no autentica identidades, concede autoridad, verifica transiciones ni demuestra efectos. Se requieren controles semánticos y del canal descritos en los documentos C1.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "message_type", "payload"],
+  "properties": {
+    "schema_version": { "const": "C1.messages.v1" },
+    "message_type": {
+      "enum": ["intent", "approval", "dispatch", "observation", "revocation", "proposal_status", "operation_status", "run_status", "build_status", "test_result"]
+    },
+    "payload": { "type": "object" }
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "message_type": { "const": "intent" },
+        "payload": { "$ref": "#/$defs/Intent" }
+      }
+    },
+    {
+      "properties": {
+        "message_type": { "const": "approval" },
+        "payload": { "$ref": "#/$defs/Approval" }
+      }
+    },
+    {
+      "properties": {
+        "message_type": { "const": "dispatch" },
+        "payload": { "$ref": "#/$defs/Dispatch" }
+      }
+    },
+    {
+      "properties": {
+        "message_type": { "const": "observation" },
+        "payload": { "$ref": "#/$defs/Observation" }
+      }
+    },
+    {
+      "properties": {
+        "message_type": { "const": "revocation" },
+        "payload": { "$ref": "#/$defs/Revocation" }
+      }
+    },
+    {
+      "properties": {
+        "message_type": { "const": "proposal_status" },
+        "payload": { "$ref": "#/$defs/ProposalStatus" }
+      }
+    },
+    {
+      "properties": {
+        "message_type": { "const": "operation_status" },
+        "payload": { "$ref": "#/$defs/OperationStatus" }
+      }
+    },
+    {
+      "properties": {
+        "message_type": { "const": "run_status" },
+        "payload": { "$ref": "#/$defs/RunStatus" }
+      }
+    },
+    {
+      "properties": {
+        "message_type": { "const": "build_status" },
+        "payload": { "$ref": "#/$defs/BuildStatus" }
+      }
+    },
+    {
+      "properties": {
+        "message_type": { "const": "test_result" },
+        "payload": { "$ref": "#/$defs/TestResult" }
+      }
+    }
+  ],
+  "$defs": {
+    "Identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$"
+    },
+    "SafeInteger": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "UtcTimestamp": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 20,
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$",
+      "description": "UTC normalizado sin fracciones ni segundos intercalares. El receptor debe validar existencia calendárica y confianza del reloj."
+    },
+    "IntentDigest": {
+      "type": "string",
+      "pattern": "^C1\\.intent\\.v1:sha256:[0-9a-f]{64}$",
+      "minLength": 84,
+      "maxLength": 84,
+      "description": "SHA-256 de la representación canónica C1.intent.v1. No constituye autenticación."
+    },
+    "ProposalState": {
+      "enum": ["DRAFT", "AWAITING_APPROVAL", "APPROVED", "REJECTED", "EXPIRED", "REVOKED"]
+    },
+    "DispatchState": {
+      "enum": ["NOT_RESERVED", "RESERVED", "DISPATCHING", "CLOSED"]
+    },
+    "EffectState": {
+      "enum": ["NOT_SENT", "ACCEPTED", "UNKNOWN", "CONFIRMED_APPLIED", "CONFIRMED_NOT_APPLIED", "CONFIRMED_MISMATCH"]
+    },
+    "ProductRunState": {
+      "enum": ["IDLE", "RUNNING", "PAUSED", "RECONCILING", "STOPPED", "INCIDENT"]
+    },
+    "BuildState": {
+      "enum": ["PLANNED", "BUILDING", "VERIFYING", "REVIEW_REQUIRED", "CHECKPOINTED", "BLOCKED", "STOPPED"]
+    },
+    "TestState": {
+      "enum": ["NO_EJECUTADO", "PASS", "FAIL", "INCONCLUSO"]
+    },
+    "Intent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "intent_id", "run_id", "principal_id", "calendar_id", "event_id", "operation", "expected_version", "start_utc", "end_utc"],
+      "properties": {
+        "schema_version": { "const": "C1.intent.v1" },
+        "intent_id": { "$ref": "#/$defs/Identifier" },
+        "run_id": { "$ref": "#/$defs/Identifier" },
+        "principal_id": { "$ref": "#/$defs/Identifier" },
+        "calendar_id": { "$ref": "#/$defs/Identifier" },
+        "event_id": { "$ref": "#/$defs/Identifier" },
+        "operation": { "const": "RESCHEDULE_EVENT" },
+        "expected_version": { "$ref": "#/$defs/SafeInteger" },
+        "start_utc": { "$ref": "#/$defs/UtcTimestamp" },
+        "end_utc": { "$ref": "#/$defs/UtcTimestamp" }
+      },
+      "description": "La identidad, existencia y alcance del recurso, igualdad de versión y duración positiva requieren validación semántica externa."
+    },
+    "Approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["approval_id", "intent_digest", "approver_id", "authority_epoch", "expires_at", "status"],
+      "properties": {
+        "approval_id": { "$ref": "#/$defs/Identifier" },
+        "intent_digest": { "$ref": "#/$defs/IntentDigest" },
+        "approver_id": { "$ref": "#/$defs/Identifier" },
+        "authority_epoch": { "$ref": "#/$defs/SafeInteger" },
+        "expires_at": { "$ref": "#/$defs/UtcTimestamp" },
+        "status": {
+          "allOf": [
+            { "$ref": "#/$defs/ProposalState" },
+            { "enum": ["APPROVED", "REJECTED", "EXPIRED", "REVOKED"] }
+          ]
+        }
+      },
+      "description": "Registro de decisión o invalidación externa. Sólo APPROVED, vigente y no consumido, puede respaldar una mutación. Los identificadores no autentican al autorizador."
+    },
+    "Dispatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operation_id", "intent_digest", "approval_id", "expected_version", "authority_epoch"],
+      "properties": {
+        "operation_id": { "$ref": "#/$defs/Identifier" },
+        "intent_digest": { "$ref": "#/$defs/IntentDigest" },
+        "approval_id": { "$ref": "#/$defs/Identifier" },
+        "expected_version": { "$ref": "#/$defs/SafeInteger" },
+        "authority_epoch": { "$ref": "#/$defs/SafeInteger" }
+      },
+      "description": "Referencia una intención previamente registrada y una reserva durable. El receptor comprueba coincidencia, identidad, vigencia y consumo dentro de la transacción."
+    },
+    "Observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operation_id", "observed_at", "receiver_version", "outcome", "evidence_ref"],
+      "properties": {
+        "operation_id": { "$ref": "#/$defs/Identifier" },
+        "observed_at": { "$ref": "#/$defs/UtcTimestamp" },
+        "receiver_version": {
+          "anyOf": [
+            { "$ref": "#/$defs/SafeInteger" },
+            { "type": "null" }
+          ]
+        },
+        "outcome": { "$ref": "#/$defs/EffectState" },
+        "evidence_ref": { "$ref": "#/$defs/Identifier" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "outcome": { "enum": ["CONFIRMED_APPLIED", "CONFIRMED_MISMATCH"] }
+            },
+            "required": ["outcome"]
+          },
+          "then": {
+            "properties": {
+              "receiver_version": { "$ref": "#/$defs/SafeInteger" }
+            }
+          }
+        }
+      ],
+      "description": "Una referencia de evidencia no demuestra su contenido. Sólo receptor y observador protegidos pueden sustentar confirmaciones; ausencia momentánea no prueba no aplicación."
+    },
+    "Revocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["revocation_id", "principal_id", "calendar_id", "previous_epoch", "authority_epoch", "committed_at"],
+      "properties": {
+        "revocation_id": { "$ref": "#/$defs/Identifier" },
+        "principal_id": { "$ref": "#/$defs/Identifier" },
+        "calendar_id": { "$ref": "#/$defs/Identifier" },
+        "previous_epoch": { "$ref": "#/$defs/SafeInteger" },
+        "authority_epoch": { "$ref": "#/$defs/SafeInteger" },
+        "committed_at": { "$ref": "#/$defs/UtcTimestamp" }
+      },
+      "description": "Registro posterior al commit de revocación, no solicitud autenticada. El receptor exige incremento de uno, evita desbordamiento y conserva orden serializado."
+    },
+    "ProposalStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["intent_id", "state"],
+      "properties": {
+        "intent_id": { "$ref": "#/$defs/Identifier" },
+        "state": { "$ref": "#/$defs/ProposalState" }
+      }
+    },
+    "OperationStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operation_id", "dispatch_state", "effect_state"],
+      "properties": {
+        "operation_id": { "$ref": "#/$defs/Identifier" },
+        "dispatch_state": { "$ref": "#/$defs/DispatchState" },
+        "effect_state": { "$ref": "#/$defs/EffectState" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "dispatch_state": { "const": "NOT_RESERVED" } },
+            "required": ["dispatch_state"]
+          },
+          "then": {
+            "properties": { "effect_state": { "const": "NOT_SENT" } }
+          }
+        }
+      ],
+      "description": "Snapshot informativo. CLOSED puede coexistir con UNKNOWN; cerrar el despacho no resuelve el efecto. Las transiciones requieren el historial durable."
+    },
+    "RunStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["run_id", "state"],
+      "properties": {
+        "run_id": { "$ref": "#/$defs/Identifier" },
+        "state": { "$ref": "#/$defs/ProductRunState" }
+      },
+      "description": "Informativo: no inicia ni reanuda una ejecución."
+    },
+    "BuildStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["task_id", "state", "repair_attempts"],
+      "properties": {
+        "task_id": { "$ref": "#/$defs/Identifier" },
+        "state": { "$ref": "#/$defs/BuildState" },
+        "repair_attempts": { "type": "integer", "minimum": 0, "maximum": 3 }
+      },
+      "description": "El plazo de 30 minutos por tarea y recursos totales se aplican externamente. Este registro no autoriza publicación."
+    },
+    "TestResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["case_id", "state", "evidence_refs"],
+      "properties": {
+        "case_id": { "$ref": "#/$defs/Identifier" },
+        "state": { "$ref": "#/$defs/TestState" },
+        "evidence_refs": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/Identifier" },
+          "uniqueItems": true,
+          "maxItems": 128
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "state": { "enum": ["PASS", "FAIL", "INCONCLUSO"] } },
+            "required": ["state"]
+          },
+          "then": {
+            "properties": { "evidence_refs": { "minItems": 1 } }
+          }
+        }
+      ],
+      "description": "Estado inicial NO_EJECUTADO. Las referencias deben resolverse a evidencia protegida; el esquema no acredita ejecución, completitud ni validez de un PASS."
+    }
+  }
+}
