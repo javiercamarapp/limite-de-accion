@@ -189,3 +189,5 @@ A short introduction you can adapt:
 Local operations: [Unix/SQLite commands and limits](docs/OPERATOR-CLI.es.md), via `python -m laboratorio.operator_cli`. This is a synthetic same-UID workflow, not human authentication or role isolation.
 
 Experiment provenance: [versioned local manifests](docs/EXPERIMENT-REGISTRY.es.md), via `python -m laboratorio.experiment_registry`. Hashes are computed from actual files; missing/invalid artifacts remain explicit. Integrity is not authenticity, scientific validation, or authorization.
+
+Forecast tracking: [append-only local ledger](docs/FORECAST-LEDGER.es.md), via `python -m laboratorio.forecast_ledger`. Registration dates are distinct from declared dates; unresolved forecasts do not receive a score, and evidence remains unverified.
