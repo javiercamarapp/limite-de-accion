@@ -18,7 +18,7 @@ laboratorio = "laboratorio.__main__:main"
 packages = ["src/laboratorio"]
 
 [tool.hatch.build.targets.sdist]
-include = ["src/laboratorio", "tests", "contracts", "tools/probar_modelo_local.py", "tools/inferencia_mlx.py", "tools/preflight_local.py", "tools/probe_unix_isolation.py", "pyproject.toml", "README.md", "docs/USAGE.es.md", "docs/CONTROL.es.md", "docs/OPERATOR-CLI.es.md", "docs/EXPERIMENT-REGISTRY.es.md", "docs/FORECAST-LEDGER.es.md", "ESTADO.md", "PROGRAMA.md", "RECUPERACION.md", "CONTINUACION.md", "LICENSE", "CONTRIBUTING.md", "SECURITY.md", "uv.lock"]
+include = ["src/laboratorio", "tests", "contracts", "tools/probar_modelo_local.py", "tools/inferencia_mlx.py", "tools/preflight_local.py", "tools/probe_unix_isolation.py", "pyproject.toml", "README.md", "docs/USAGE.es.md", "docs/CONTROL.es.md", "docs/OPERATOR-CLI.es.md", "docs/EXPERIMENT-REGISTRY.es.md", "docs/FORECAST-LEDGER.es.md", "docs/EVIDENCE-IMPORT.es.md", "ESTADO.md", "PROGRAMA.md", "RECUPERACION.md", "CONTINUACION.md", "LICENSE", "CONTRIBUTING.md", "SECURITY.md", "uv.lock"]
 
 [project.optional-dependencies]
 local-model = ["mlx-lm>=0.30,<0.40"]

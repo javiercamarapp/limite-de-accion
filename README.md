@@ -191,3 +191,5 @@ Local operations: [Unix/SQLite commands and limits](docs/OPERATOR-CLI.es.md), vi
 Experiment provenance: [versioned local manifests](docs/EXPERIMENT-REGISTRY.es.md), via `python -m laboratorio.experiment_registry`. Hashes are computed from actual files; missing/invalid artifacts remain explicit. Integrity is not authenticity, scientific validation, or authorization.
 
 Forecast tracking: [append-only local ledger](docs/FORECAST-LEDGER.es.md), via `python -m laboratorio.forecast_ledger`. Registration dates are distinct from declared dates; unresolved forecasts do not receive a score, and evidence remains unverified.
+
+Evidence intake: [bounded offline snapshots](docs/EVIDENCE-IMPORT.es.md), via `python -m laboratorio.evidence_import`. Local UTF-8 files are copied into new private bundles and rehashed on verification; URLs are never fetched and integrity does not establish truth or authenticity.
