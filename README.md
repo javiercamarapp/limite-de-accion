@@ -101,9 +101,11 @@ The [regression is in the repository](tests/test_numeric_precision.py). So are t
 
 ## Evidence, not a green-badge promise
 
-The recorded September 19, 2026 verification includes:
+The September 20, 2026 integration record includes **688 passing tests, no skips**, from the host source, a clean extracted source distribution, and a fresh public clone. A separately installed wheel completed the four-store CLI workflow with real Unix sockets: exactly one synthetic calendar effect, rejected unauthorized/revoked operations, and no store mutation by the status console. See the [full record, failed attempts and limitations](docs/VERIFICATION-20260920.es.md).
 
-- **402 passing tests, no skips**, from the source tree and an extracted source distribution, including a packaging-link regression.
+Historical September 19 checks (not reruns of the new 688-test suite):
+
+- **402 passing tests, no skips**, from the earlier source tree and an extracted source distribution, including a packaging-link regression.
 - **402 passing tests on Linux aarch64**, no skips, in a separate offline test container. Its trusted-code workspace permits native-extension execution; the permission preflight retains its separate `noexec` profile.
 - Both control demos run from a clean wheel installation outside the source checkout; MIT license and source-distribution contents inspected.
 - Real Unix/SQLite recovery demo: one effect, no uncertain-operation redispatch, revoked follow-up rejected.
@@ -152,6 +154,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the contribution workflow, testing ex
 - [x] Bounded process supervision with failure regressions.
 - [x] Kernel-identified Unix transport and durable no-replay reconciliation.
 - [x] Benign three-UID Docker preflight with bounded resources and explicit limitations.
+- [x] Persistent operator CLI, versioned experiment manifests and immutable forecast declarations.
+- [x] Bounded offline evidence intake and a read-only JSON/text operations console.
 - [ ] Independently verified OS isolation and candidate/evaluator separation.
 - [ ] Real authentication and protected administrative authority.
 - [ ] Reproducible local-model integration and justified, evaluated adaptation.

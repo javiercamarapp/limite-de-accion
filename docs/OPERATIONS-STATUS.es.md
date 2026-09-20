@@ -111,7 +111,11 @@ PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src ../.venv/bin/python -B -m pytest -q -p 
 
 Resultado: **19 passed, 6 deselected in 2.53s**, exit 0, cero skips. Los seis casos no seleccionados no se cuentan como verificados.
 
-Comando exacto para las reproducciones del auditor, con destinos temporales propios:
+### Reproducción pública y comando histórico de auditoría
+
+Las regresiones distribuidas se ejecutan desde el repositorio con `python -m pytest -q tests/test_operations_status.py`. Los bloques anteriores que usan `../.venv/bin/python` son comandos históricos del entorno de construcción; en un entorno instalado use `python`.
+
+El siguiente comando se conserva como evidencia histórica: requiere `../.v27/runs/review-v27-independent/repro.py`, **artefacto privado no distribuido**. No es un paso de instalación ni un comando reproducible desde un clon público por sí solo:
 
 ```sh
 PYTHONPATH=src ../.venv/bin/python -B - <<'PY'

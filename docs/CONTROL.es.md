@@ -47,7 +47,7 @@ PYTHONPATH=src /Users/javiercamaraportepetit/Proyectos/limite-de-accion/.venv/bi
 
 `tests/test_control_recovery_real.py` contiene una regresión de SIGKILL real en dos variantes: SQLite directo y transporte Unix/SQLite. El padre espera el recibo del efecto ya confirmado por el receptor y comprueba en otra conexión que el controlador aún conserva `DISPATCHING` sin recibo. Sólo entonces mata a su propio hijo benigno, espera su terminación y verifica reapertura a `UNKNOWN`, ausencia de reenvío, reconciliación a `CONFIRMED`, horario/versión exactos y presupuesto persistente. El hijo no crea descendientes. La variante directa prueba muerte/persistencia, no credenciales del kernel; no sustituye la variante Unix. Ninguna prueba nueva se omite cuando bind está restringido.
 
-Evidencia de esta propuesta local (19-sep-2026; pendiente de revisor limpio):
+Evidencia histórica de la propuesta en sandbox (19-sep-2026; en ese momento pendiente de revisor limpio):
 
 - Baseline, `python -m pytest -q -p no:cacheprovider`: **364 passed, 1 failed, 37 skipped**, 402 casos. El fallo existente es `test_cli_durable_control_recovers_without_replay`, con `PermissionError: [Errno 1] Operation not permitted` al abrir el socket.
 - TDD inicial del archivo nuevo: **7 failed, 6 passed**. Se observaron aceptación indebida de enlaces, bloqueo FIFO hasta timeout, aceptación de `..` y conexión SQLite sin cerrar. Dos fallos correspondían al bind restringido. Una regresión posterior del error SQLite observó `OperationalError` sin convertir a JSON antes de corregirla.
@@ -55,7 +55,7 @@ Evidencia de esta propuesta local (19-sep-2026; pendiente de revisor limpio):
 - Suite completa final, `python -m pytest -q -p no:cacheprovider --tb=short`: **377 passed, 4 failed, 37 skipped**, 418 casos. Los cuatro fallos son bind Unix denegado: la demo existente y las tres pruebas nuevas de inicio de hilo, reemplazo/cleanup y SIGKILL/Unix. Las 37 omisiones provienen de pruebas existentes, sin modificar sus reglas.
 - Wheel y sdist generados con `hatchling.build.build_wheel` / `build_sdist`, usando paquetes ya presentes en caché local, sin instalar dependencias ni acceder a red.
 
-Esta evidencia **no cumple todavía** la compuerta de cero fallos/omisiones. Falta ejecutar la suite con sockets permitidos y obtener revisión limpia independiente. La publicación permanece retenida; estos resultados no certifican producto completo, autenticación humana, separación de UID ni contención adversarial.
+Ese checkpoint del sandbox **no cumplía** la compuerta de cero fallos/omisiones y entonces se retuvo la publicación. Posteriormente se ejecutaron las pruebas con sockets reales en el host, se cerraron las revisiones independientes y se publicó el código; la suite integrada actual tiene 688 casos sin fallos/skips. Véase el [cierre vigente](VERIFICATION-20260920.es.md). Ninguno de esos resultados certifica producto completo, autenticación humana, separación de UID ni contención adversarial.
 
 ## Contrato del controlador
 

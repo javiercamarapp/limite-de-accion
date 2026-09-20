@@ -1,4 +1,14 @@
-# Estado verificable — recuperación del 19 de septiembre de 2026
+# Estado verificable — actualizado el 20 de septiembre de 2026 (UTC)
+
+## Integración vigente
+
+Los seis trabajos de la cola local están integrados en cinco commits de código publicados en `main`, hasta `83171eb`: CLI endurecida/operador, experimentos, pronósticos, importación offline de evidencia y consola de estado. **688 pruebas sin fallos ni skips** en host, sdist limpio y clon público; wheel instalado por separado y recorrido de cuatro almacenes con servicio Unix real verificados. [Registro completo y limitaciones](docs/VERIFICATION-20260920.es.md).
+
+El supervisor antiguo se detuvo de forma controlada por el bloqueo de validación en sandbox; su STOP y estado se conservaron. La integración continuó supervisada, con el mismo contador y deadline, y publicación manual tras revisión/pruebas. No hay que interpretar un estado histórico como proceso vivo. El presupuesto acumulado está en `runs/continuo-20260919/integration/budget.json`: **24/24 consumidas**, incluida auditoría final. Tanda detenida por presupuesto, sin supervisor ni agente activos; no se presenta como ejecución continua vigente.
+
+**Producto enterprise NO completo.** Consola significa CLI JSON/texto, no interfaz gráfica. Importación offline no significa observatorio web automático. H1, C1-T02, aislamiento adversarial, despliegue y evaluación/adaptación reservada siguen pendientes.
+
+Las secciones inferiores son checkpoints históricos y sus cifras no sustituyen las actuales.
 
 ## Alcance entregado
 Incremento local experimental, no entrega enterprise completa. Repositorio público con licencia MIT (publicación autorizada y verificada después de esta recuperación): https://github.com/javiercamarapp/limite-de-accion, rama predeterminada `main`. La rama local de construcción es `feat/laboratorio-local`.

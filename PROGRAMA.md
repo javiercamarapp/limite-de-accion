@@ -1,5 +1,15 @@
 # Programa acotado — laboratorio y control
 
+## Estado vigente — 20-sep-2026 UTC
+
+La cola de seis incrementos locales está integrada y publicada hasta `83171eb`, con revisiones por componente y 688 pruebas sin skips. La auditoría documental final se ejecutó como llamada **24/24**; sus precisiones históricas se corrigieron. La tanda queda **detenida por presupuesto de agentes agotado**, no como producto enterprise terminado. El supervisor de la sección siguiente quedó `STOPPED`: no se borraron STOP/estado ni se reinició su reloj. El coordinador continuó en primer plano, separando verificación real del host de restricciones AF_UNIX del sandbox, sin relajar tests.
+
+Se mantiene el presupuesto ORIGINAL: máximo 24 ejecuciones, una simultánea, deadline `2026-09-20T04:30:39Z`; las 9 iniciales más ejecuciones posteriores se cuentan en `runs/continuo-20260919/integration/budget.json`. No renovar automáticamente. La publicación MANUAL de incrementos revisados está autorizada por el usuario y se ha realizado; esto no habilita la publicación automática del supervisor.
+
+Métrica alcanzada de la cola: seis contratos locales integrados, sin regresiones observadas; no cantidad de commits artificiales. Hay cinco commits sustantivos de código para esos seis contratos. Las tareas productivas pendientes requieren otra tanda y, donde corresponda, permisos/infraestructura/datos que esta ejecución no acredita. El agotamiento de cola o de presupuesto nunca marca `enterprise_complete=true`. Evidencia y límites: [verificación integrada](docs/VERIFICATION-20260920.es.md).
+
+Lo siguiente conserva la política e historia de arranque, no acredita un proceso todavía activo.
+
 ## Autorización vigente: bucle en segundo plano, 19-sep-2026
 
 El usuario volvió a ordenar «dejalo en bucle hasta terminar». Se prepara ejecución real, no una promesa de continuar después de responder. Esta sección sustituye los presupuestos históricos inferiores para esta nueva tanda.

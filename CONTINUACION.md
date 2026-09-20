@@ -1,4 +1,14 @@
-# Ejecución continua autorizada — 2026-09-19
+# Ejecución continua autorizada — actualización 2026-09-20 UTC
+
+## Punto de reanudación vigente
+
+- `main` público contiene los cinco incrementos revisados hasta `83171eb`; [verificación de los seis contratos locales](docs/VERIFICATION-20260920.es.md). No confundirlos con entrega enterprise.
+- Supervisor original **detenido**, STOP conservado. Continuación supervisada sin reiniciar presupuesto: historial original en `runs/continuo-20260919/state.json`, ejecuciones adicionales en `runs/continuo-20260919/integration/budget.json`. Presupuesto conjunto **agotado: 24/24** después de la auditoría final. No lanzar más agentes ni relanzar el supervisor bajo esta tanda; el deadline original era 04:30:39 UTC y no renueva el contador. No queda un bucle autónomo corriendo.
+- Los cambios publicados pasaron revisión técnica separada y ejecución completa del host; restricciones del sandbox no se transformaron en defectos ni en aprobaciones ficticias. Publicación manual autorizada, no auto-push del supervisor.
+- Próxima tanda de producto: definir y verificar una topología separada de operador/candidato/evaluador, autenticación humana/H1 y C1-T02; interfaz gráfica y operación/despliegue; observatorio con fuentes reales y evaluación reservada/prospectiva. No activar permisos, servicios pagados, descargas grandes o entrenamiento por inferencia de estos pendientes.
+- Preservar `artifacts/`, `investigacion-modelos/`, herramientas heredadas, clones candidatos y evidencias. No reset, force-push, limpieza general ni modificación de otros proyectos.
+
+Las secciones siguientes documentan autorizaciones históricas, no procesos actualmente vivos ni nuevos presupuestos.
 
 ## Nueva autorización después de 21:47 UTC
 
