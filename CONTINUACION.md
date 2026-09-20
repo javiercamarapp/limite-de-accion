@@ -3,7 +3,7 @@
 ## Punto de reanudación vigente — aplicación local0.2
 
 - Frontend y backend locales implementados; arranque `uv run --locked limite-app`. [Guía y límites](docs/web-app/GUIA.md), [verificación](docs/web-app/VERIFICACION.md).
-- Tanda web separada: inicio01:56:49Z, límite04:56:49Z, máximo12ejecuciones secuenciales;8utilizadas. Tres revisiones arquitectónicas y una aceptación independiente de casos conocidos, no una cuarta ronda de diseño.
+- Tanda web separada terminada por meta local cumplida: inicio01:56:49Z, límite04:56:49Z, máximo12ejecuciones secuenciales;8utilizadas. STOP propio y cierre en `runs/web-20260920/`; no reanudarla automáticamente. Sólo queda el servidor de aplicación, no agentes. Su PID/URL se registraron en `runs/web-20260920/integration/local-app.json`: comprobarlos antes de afirmar que sigue vivo. Tres revisiones arquitectónicas y una aceptación independiente de casos conocidos, no una cuarta ronda de diseño.
 - Fuente/sdist:732tests+22subtests sin skips; wheel instalado y Chromium real con persistencia tras reinicio. Los reportes privados y candidatos permanecen intactos en `runs/web-20260920/` y clones `.l40`–`.v44`.
 - La siguiente necesidad no es dibujar una UI: falta autenticación humana/H1, C1-T02/topología separada, despliegue/operación productiva, observatorio de fuentes reales y evaluación reservada/prospectiva. Requieren alcance y autorización específicos; no inferirlos de la app local.
 

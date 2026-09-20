@@ -6,9 +6,11 @@
 - Chromium real: evaluación8/10, rechazo de JSON duplicado/no finito, precisión exacta de enteros en formulario/cálculo/descarga, registro experimental MATCH, pronóstico multilínea y Brier0.49, importación/verificación/exportación UTF8, demoUnix con un efecto ficticio y revocación, desconexión/reconexión, escritorio y móvil375/320px, navegación accesible,21registros paginados y persistencia tras parar/reabrir el proceso.
 - El script público reproducible es `tools/test_web_browser.py`. Sólo crea datos sintéticos;17registros adicionales se preparan explícitamente porAPI para comprobar páginas, no se atribuyen a clics humanos.
 - Sdist extraído físicamente en una ruta corta, con entorno Python nuevo: **732 pruebas +22 subtests**, sin fallos ni skips. Wheel instalado por separado con dependencias bloqueadas: el script Chromium distribuido completó el mismo recorrido y el reinicio del servidor. Se comprobaron assets, entrypoint, orígenes instalados y ausencia de datos privados en el wheel.
-- Clon público de esta versión: pendiente de publicación; no se infiere de los otros entornos.
+- Clon nuevo de `main` público en `5f127f9e5d92cb04e27a10fb6f2fc0300d9475f9`: **732 pruebas +22 subtests**, sin fallos ni skips. Su wheel reconstruido contiene20archivos de paquete idénticos porbytes a la fuente y al wheel probado en Chromium. GitHub reconoce a `javiercamarapp` como autor; Actions sigue desactivado.
+- Operador opcional: navegador contra el wheel con un fixture Unix previo. Estado AVAILABLE, presupuesto3/3,1CONFIRMED/2REJECTED, sin botones de aprobar/despachar. Hashes y mtimes del operador sin cambios; `service_alive:null` y `dispatch_authorized:false`.
+- Instancia de entrega iniciada con `limite-app` en `http://127.0.0.1:8765`; seis vistas comprobadas enChromium sin errores JS ni cambios a los archivos porconsultar. Es un proceso local, no un bucle de agentes ni servicio persistente al reiniciar elMac.
 
-Evidencia local excluida de Git: `runs/web-20260920/integration/`, `runs/browser-source-final/`. La captura distribuida sólo contiene fixtures sintéticos.
+Evidencia local excluida de Git: `runs/web-20260920/integration/`, `runs/browser-source-final/`, `runs/browser-wheel/`, `runs/browser-operator/`. La captura distribuida sólo contiene fixtures sintéticos.
 
 ## Revisión y correcciones
 

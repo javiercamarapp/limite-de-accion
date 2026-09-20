@@ -6,7 +6,9 @@ Ya existe interfaz gráfica en español: Resumen, Evaluaciones, Experimentos, Pr
 
 **732 pruebas +22 subtests**, sin skips, en fuente y sdist limpio. Wheel instalado: recorrido Chromium real, móvil, precisión de enteros,21registros paginados y persistencia tras reiniciar. Tres revisiones técnicas, correcciones y aceptación independiente de las regresiones finales. [Evidencia y límites](docs/web-app/VERIFICACION.md).
 
-La tanda web fue independiente, con máximo12agentes/3horas; consumió8ejecuciones secuenciales. No renovó el contador24/24 ni quitó elSTOP anterior. El servidor gráfico no es un supervisor de agentes.
+Aplicación publicada en `5f127f9`; clon remoto nuevo también pasa732tests+22subtests. Instancia de entrega comprobada en `http://127.0.0.1:8765` — su disponibilidad posterior depende del proceso local.
+
+La tanda web terminó por meta local cumplida, con máximo12agentes/3horas; consumió8ejecuciones secuenciales. No renovó el contador24/24 ni quitó elSTOP anterior. El servidor gráfico no es un supervisor de agentes.
 
 **Sigue sin ser producto enterprise:** no despliegue público, autenticación humana/H1, C1-T02, aislamiento adversarial ni validación reservada/prospectiva. La UI evalúa respuestas aportadas; no ejecuta inferencia ni entrenamiento desde el navegador.
 
