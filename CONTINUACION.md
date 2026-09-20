@@ -1,6 +1,13 @@
 # Ejecución continua autorizada — actualización 2026-09-20 UTC
 
-## Punto de reanudación vigente
+## Punto de reanudación vigente — aplicación local0.2
+
+- Frontend y backend locales implementados; arranque `uv run --locked limite-app`. [Guía y límites](docs/web-app/GUIA.md), [verificación](docs/web-app/VERIFICACION.md).
+- Tanda web separada: inicio01:56:49Z, límite04:56:49Z, máximo12ejecuciones secuenciales;8utilizadas. Tres revisiones arquitectónicas y una aceptación independiente de casos conocidos, no una cuarta ronda de diseño.
+- Fuente/sdist:732tests+22subtests sin skips; wheel instalado y Chromium real con persistencia tras reinicio. Los reportes privados y candidatos permanecen intactos en `runs/web-20260920/` y clones `.l40`–`.v44`.
+- La siguiente necesidad no es dibujar una UI: falta autenticación humana/H1, C1-T02/topología separada, despliegue/operación productiva, observatorio de fuentes reales y evaluación reservada/prospectiva. Requieren alcance y autorización específicos; no inferirlos de la app local.
+
+## Punto de reanudación CLI anterior — histórico
 
 - `main` público contiene los cinco incrementos revisados hasta `83171eb`; [verificación de los seis contratos locales](docs/VERIFICATION-20260920.es.md). No confundirlos con entrega enterprise.
 - Supervisor original **detenido**, STOP conservado. Continuación supervisada sin reiniciar presupuesto: historial original en `runs/continuo-20260919/state.json`, ejecuciones adicionales en `runs/continuo-20260919/integration/budget.json`. Presupuesto conjunto **agotado: 24/24** después de la auditoría final. No lanzar más agentes ni relanzar el supervisor bajo esta tanda; el deadline original era 04:30:39 UTC y no renueva el contador. No queda un bucle autónomo corriendo.
@@ -29,7 +36,7 @@ Inicio 20:17 UTC, deadline fijo **2026-09-19T21:47:00Z**, 90 minutos. Hasta ocho
 Main remoto `6adff1d`; MIT publicado, repo público confirmado por API anónima, reportes privados habilitados y Actions desactivado. Baseline local 189 pruebas. No tocar VEXA ni Bio Humanidad. Trabajo previo sin versionar en artifacts/, investigacion-modelos/ y cuatro scripts de construcción/investigación/descarga: preservado, excluido de publicación.
 
 ## Contrato de la siguiente frontera
-Se releyeron los capítulos 06 y 14 del blueprint original. Aunque el alcance del laboratorio se amplió, C1 conserva sus invariantes: sockets Unix, identidad del par del OS, roles/usuarios separados, ninguna identidad administrativa o rol concedidos por JSON, calendario ficticio inicializado fuera de la ejecución. No agregar endpoints web ni convertir tokens bajo el mismo UID en supuesto aislamiento canónico. Publicación fue autorizada posteriormente y no activa efectos externos.
+Se releyeron los capítulos 06 y 14 del blueprint original. Aunque el alcance del laboratorio se amplió, C1 conserva sus invariantes: sockets Unix, identidad del par del OS, roles/usuarios separados, ninguna identidad administrativa o rol concedidos por JSON, calendario ficticio inicializado fuera de la ejecución. No agregar endpoints web de autoridad real ni convertir tokens bajo el mismo UID en supuesto aislamiento canónico. La autorización posterior de frontend local no cambia esa frontera. Publicación fue autorizada posteriormente y no activa efectos externos.
 
 ## Entregables y verificación
 1. **Identidad y receptor Unix:** módulo de transporte local con validación estricta de mensajes, tamaño/timeout, identidad del par obtenida del OS, asignación externa de UID a rol/principal y rechazo de rol/principal inyectado. Canales administrativos y de despacho separados. Inicializar fixtures fuera del servicio, sin endpoint genérico de edición. Pruebas sobre sockets reales en el host para identidad local; separar de pruebas entre UIDs aún pendientes.

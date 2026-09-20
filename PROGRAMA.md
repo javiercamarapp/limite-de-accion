@@ -1,6 +1,10 @@
 # Programa acotado — laboratorio y control
 
-## Estado vigente — 20-sep-2026 UTC
+## Tanda web posterior — 20-sep-2026 UTC
+
+La autorización «sí hazlo en loop» abrió una tanda independiente de3horas/hasta12agentes secuenciales, sin cambiar STOP/budget originales. Implementación local0.2: seis vistas conectadas,732tests+22subtests en fuente/sdist y aceptación Chromium desde wheel instalado. Se utilizaron8ejecuciones: construcción, correcciones, tres revisiones y validación independiente de casos conocidos. [Contrato de la tanda](docs/web-app/PLAN.md) y [evidencia](docs/web-app/VERIFICACION.md). El proceso de UI no debe confundirse con un bucle autónomo.
+
+## Estado de la tanda CLI anterior — histórico
 
 La cola de seis incrementos locales está integrada y publicada hasta `83171eb`, con revisiones por componente y 688 pruebas sin skips. La auditoría documental final se ejecutó como llamada **24/24**; sus precisiones históricas se corrigieron. La tanda queda **detenida por presupuesto de agentes agotado**, no como producto enterprise terminado. El supervisor de la sección siguiente quedó `STOPPED`: no se borraron STOP/estado ni se reinició su reloj. El coordinador continuó en primer plano, separando verificación real del host de restricciones AF_UNIX del sandbox, sin relajar tests.
 

@@ -1,12 +1,22 @@
 # Estado verificable — actualizado el 20 de septiembre de 2026 (UTC)
 
-## Integración vigente
+## Aplicación local 0.2
+
+Ya existe interfaz gráfica en español: Resumen, Evaluaciones, Experimentos, Pronósticos, Evidencia y Control. Arranque: `uv run --locked limite-app`; URLpor defecto `http://127.0.0.1:8765`. Persistencia, exportaciones, errores visibles y paginación; no maqueta. [Guía](docs/web-app/GUIA.md).
+
+**732 pruebas +22 subtests**, sin skips, en fuente y sdist limpio. Wheel instalado: recorrido Chromium real, móvil, precisión de enteros,21registros paginados y persistencia tras reiniciar. Tres revisiones técnicas, correcciones y aceptación independiente de las regresiones finales. [Evidencia y límites](docs/web-app/VERIFICACION.md).
+
+La tanda web fue independiente, con máximo12agentes/3horas; consumió8ejecuciones secuenciales. No renovó el contador24/24 ni quitó elSTOP anterior. El servidor gráfico no es un supervisor de agentes.
+
+**Sigue sin ser producto enterprise:** no despliegue público, autenticación humana/H1, C1-T02, aislamiento adversarial ni validación reservada/prospectiva. La UI evalúa respuestas aportadas; no ejecuta inferencia ni entrenamiento desde el navegador.
+
+## Checkpoint CLI anterior — histórico
 
 Los seis trabajos de la cola local están integrados en cinco commits de código publicados en `main`, hasta `83171eb`: CLI endurecida/operador, experimentos, pronósticos, importación offline de evidencia y consola de estado. **688 pruebas sin fallos ni skips** en host, sdist limpio y clon público; wheel instalado por separado y recorrido de cuatro almacenes con servicio Unix real verificados. [Registro completo y limitaciones](docs/VERIFICATION-20260920.es.md).
 
 El supervisor antiguo se detuvo de forma controlada por el bloqueo de validación en sandbox; su STOP y estado se conservaron. La integración continuó supervisada, con el mismo contador y deadline, y publicación manual tras revisión/pruebas. No hay que interpretar un estado histórico como proceso vivo. El presupuesto acumulado está en `runs/continuo-20260919/integration/budget.json`: **24/24 consumidas**, incluida auditoría final. Tanda detenida por presupuesto, sin supervisor ni agente activos; no se presenta como ejecución continua vigente.
 
-**Producto enterprise NO completo.** Consola significa CLI JSON/texto, no interfaz gráfica. Importación offline no significa observatorio web automático. H1, C1-T02, aislamiento adversarial, despliegue y evaluación/adaptación reservada siguen pendientes.
+**Producto enterprise NO completo.** En ese checkpoint, consola significaba CLI JSON/texto; la versión0.2 posterior añade interfaz gráfica local. Importación offline no significa observatorio web automático. H1, C1-T02, aislamiento adversarial, despliegue y evaluación/adaptación reservada siguen pendientes.
 
 Las secciones inferiores son checkpoints históricos y sus cifras no sustituyen las actuales.
 

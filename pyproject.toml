@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "laboratorio-control-ia"
-version = "0.1.0"
+version = "0.2.0"
 description = "Laboratorio local: evaluación reproducible, evidencia y límites externos"
 license = "MIT"
 license-files = ["LICENSE"]
@@ -13,12 +13,13 @@ dependencies = ["jsonschema>=4,<5"]
 
 [project.scripts]
 laboratorio = "laboratorio.__main__:main"
+limite-app = "laboratorio.web_app:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/laboratorio"]
 
 [tool.hatch.build.targets.sdist]
-include = ["src/laboratorio", "tests", "contracts", "tools/probar_modelo_local.py", "tools/inferencia_mlx.py", "tools/preflight_local.py", "tools/probe_unix_isolation.py", "pyproject.toml", "README.md", "docs/USAGE.es.md", "docs/CONTROL.es.md", "docs/OPERATOR-CLI.es.md", "docs/EXPERIMENT-REGISTRY.es.md", "docs/FORECAST-LEDGER.es.md", "docs/EVIDENCE-IMPORT.es.md", "docs/OPERATIONS-STATUS.es.md", "docs/VERIFICATION-20260920.es.md", "ESTADO.md", "PROGRAMA.md", "RECUPERACION.md", "CONTINUACION.md", "LICENSE", "CONTRIBUTING.md", "SECURITY.md", "uv.lock"]
+include = ["src/laboratorio", "tests", "contracts", "tools/probar_modelo_local.py", "tools/inferencia_mlx.py", "tools/preflight_local.py", "tools/probe_unix_isolation.py", "pyproject.toml", "README.md", "docs/USAGE.es.md", "docs/CONTROL.es.md", "docs/OPERATOR-CLI.es.md", "docs/EXPERIMENT-REGISTRY.es.md", "docs/FORECAST-LEDGER.es.md", "docs/EVIDENCE-IMPORT.es.md", "docs/OPERATIONS-STATUS.es.md", "docs/VERIFICATION-20260920.es.md", "docs/web-app", "DESIGN.md", "CHANGELOG.md", "tools/test_web_browser.py", "ESTADO.md", "PROGRAMA.md", "RECUPERACION.md", "CONTINUACION.md", "LICENSE", "CONTRIBUTING.md", "SECURITY.md", "uv.lock"]
 
 [project.optional-dependencies]
 local-model = ["mlx-lm>=0.30,<0.40"]

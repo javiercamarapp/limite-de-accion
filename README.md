@@ -5,7 +5,7 @@
 
 **A local lab for testing AI answers, checking forecasts, and experimenting with explicit action boundaries.**
 
-[Run the demo](#run-it-locally) · [Find a failure](#help-build-something-worth-trusting) · [What works today](#what-you-can-use-today) · [Guía en español](docs/USAGE.es.md)
+[Open the app](#run-it-locally) · [Find a failure](#help-build-something-worth-trusting) · [What works today](#what-you-can-use-today) · [Guía en español](docs/USAGE.es.md)
 
 **Make failures reproducible. Keep confidence separate from authority.**
 
@@ -36,6 +36,20 @@ You need **Python 3.12** and [uv](https://docs.astral.sh/uv/). The recorded end-
 git clone https://github.com/javiercamarapp/limite-de-accion.git
 cd limite-de-accion
 uv sync --locked --extra dev
+uv run --locked limite-app
+```
+
+Open **http://127.0.0.1:8765**. Six connected Spanish-language views cover evaluations, experiments, forecasts, evidence, control demos and the overview. Data persists in `runs/app/`; stop with Ctrl+C and rerun to resume. No JavaScript toolchain, CDN, AI API or model download is required. **Local only:** no public deployment or human authorization over HTTP.
+
+![Local application with explicitly synthetic records](docs/web-app/screenshot.png)
+
+[Application guide and limits](docs/web-app/GUIA.md) · [Browser verification](docs/web-app/VERIFICACION.md) · [HTTP contract](docs/web-app/API.md)
+
+### CLI control checks
+
+From another terminal:
+
+```bash
 uv run --locked laboratorio demo-control
 uv run --locked python -m pytest -q
 ```
@@ -71,6 +85,7 @@ It uses synthetic approvals and the same host UID: **this demo is not OS role se
 
 | Component | What it does | What it does **not** prove |
 |---|---|---|
+| **Local graphical app** | Real forms, persistence, verification, exports, bounded pagination and mobile navigation; one-command startup | A public SaaS, human authentication, live model inference or production readiness |
 | **Answer evaluation** | Scores JSON responses against deterministic references; rejects malformed input; keeps missing answers in the denominator | General intelligence, medical efficacy, or performance on a hidden benchmark |
 | **Forecast evaluation** | Computes Brier scores for declared resolutions; keeps unresolved predictions unscored | That supplied evidence is authentic or a prediction was registered in advance |
 | **Time-series baselines** | Tests last-value and seasonal baselines using only earlier observations | Prospective forecasting ability or pandemic prediction |
@@ -101,9 +116,11 @@ The [regression is in the repository](tests/test_numeric_precision.py). So are t
 
 ## Evidence, not a green-badge promise
 
-The September 20, 2026 integration record includes **688 passing tests, no skips**, from the host source, a clean extracted source distribution, and a fresh public clone. A separately installed wheel completed the four-store CLI workflow with real Unix sockets: exactly one synthetic calendar effect, rejected unauthorized/revoked operations, and no store mutation by the status console. See the [full record, failed attempts and limitations](docs/VERIFICATION-20260920.es.md).
+The 0.2 application adds a real local interface and a distributed Chromium acceptance tool. The current host suite reports **732 passing tests plus22 subtests, no skips**. [The application verification record](docs/web-app/VERIFICACION.md) distinguishes source, clean-package and browser checks, review findings and remaining limitations.
 
-Historical September 19 checks (not reruns of the new 688-test suite):
+The prior September 20, 2026 CLI integration record includes **688 passing tests, no skips**, from the host source, a clean extracted source distribution, and a fresh public clone. A separately installed wheel completed the four-store CLI workflow with real Unix sockets: exactly one synthetic calendar effect, rejected unauthorized/revoked operations, and no store mutation by the status console. See the [full record, failed attempts and limitations](docs/VERIFICATION-20260920.es.md).
+
+Historical September 19 checks (not reruns of the 0.2 application suite):
 
 - **402 passing tests, no skips**, from the earlier source tree and an extracted source distribution, including a packaging-link regression.
 - **402 passing tests on Linux aarch64**, no skips, in a separate offline test container. Its trusted-code workspace permits native-extension execution; the permission preflight retains its separate `noexec` profile.
@@ -198,4 +215,4 @@ Forecast tracking: [append-only local ledger](docs/FORECAST-LEDGER.es.md), via `
 
 Evidence intake: [bounded offline snapshots](docs/EVIDENCE-IMPORT.es.md), via `python -m laboratorio.evidence_import`. Local UTF-8 files are copied into new private bundles and rehashed on verification; URLs are never fetched and integrity does not establish truth or authenticity.
 
-Operations console: [read-only JSON/text status](docs/OPERATIONS-STATUS.es.md), via `python -m laboratorio.operations_status`. Combines the four local stores without starting services, recovering state, or authorizing actions. This is a CLI, not a deployed web dashboard.
+Operations console: [read-only JSON/text status](docs/OPERATIONS-STATUS.es.md), via `python -m laboratorio.operations_status`. Combines the four local stores without starting services, recovering state, or authorizing actions. That module remains a CLI; the [local graphical application](docs/web-app/GUIA.md) now provides a separate presentation layer. Neither is a publicly deployed dashboard.

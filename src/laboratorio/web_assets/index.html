@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Límite de Acción · Laboratorio</title>
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+<script src="/app.js" defer></script>
+</head>
+<body>
+<a id="skip-link" class="skip" href="#main">Saltar al contenido</a>
+<aside class="sidebar">
+<a class="brand" href="#resumen"><img src="/icon.svg" width="36" height="36" alt=""><span>Límite de Acción<small>CONSOLA DE INVESTIGACIÓN</small></span></a>
+<button id="menu-toggle" class="menu-toggle" type="button" aria-controls="navigation" aria-expanded="false">Abrir menú</button>
+<nav id="navigation" aria-label="Navegación principal">
+<p class="nav-label">ESPACIO DE TRABAJO</p>
+<a href="#resumen"><span aria-hidden="true">◫</span> Resumen</a>
+<a href="#evaluaciones"><span aria-hidden="true">▤</span> Evaluaciones</a>
+<a href="#experimentos"><span aria-hidden="true">◈</span> Experimentos</a>
+<a href="#pronosticos"><span aria-hidden="true">↗</span> Pronósticos</a>
+<a href="#evidencia"><span aria-hidden="true">▧</span> Evidencia</a>
+<a href="#control"><span aria-hidden="true">◎</span> Control</a>
+<div class="sidebar-note"><span class="local-dot"></span> Local / experimental<p>Resultados observables.<br>Límites explícitos.</p></div>
+</nav>
+</aside>
+<div class="workspace">
+<header class="topbar"><span>Laboratorio <span aria-hidden="true">/</span> <strong id="breadcrumb">Resumen</strong></span><div class="toolbar"><span id="connection" class="badge">Conectando…</span><button id="refresh" type="button" class="secondary">Actualizar</button></div></header>
+<div id="notification" class="notification" role="status" aria-live="polite" aria-atomic="true" hidden></div>
+<div id="warnings" class="warnings" role="alert" hidden></div>
+<main id="main" tabindex="-1"><div id="view"><div class="empty"><h1>Cargando el laboratorio</h1><p>Consultando el estado del servidor local…</p></div></div></main>
+<footer>Datos del workspace local · Sin certificación prospectiva ni autenticación humana.</footer>
+</div>
+<noscript>Esta aplicación necesita JavaScript para consultar la API local.</noscript>
+</body>
+</html>
